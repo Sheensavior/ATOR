@@ -1,0 +1,52 @@
+local TeleportService = game:GetService("TeleportService")
+local Players = game:GetService("Players")
+
+local player = Players.LocalPlayer
+local placeId = game.PlaceId
+local jobId = game.JobId
+
+-- 🔁 mặc định luôn bật
+local isRejoinEnabled = true
+
+-- ================== GUI ==================
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+local toggleButton = Instance.new("TextButton")
+toggleButton.Parent = screenGui
+toggleButton.Size = UDim2.new(0, 200, 0, 50)
+toggleButton.Position = UDim2.new(0, 20, 0.5, -25)
+toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- 🎨 update UI
+local function updateUI()
+    toggleButton.Text = "Rejoin: " .. (isRejoinEnabled and "Bật" or "Tắt")
+    toggleButton.BackgroundColor3 = isRejoinEnabled 
+        and Color3.fromRGB(0, 255, 0) 
+        or Color3.fromRGB(255, 0, 0)
+end
+
+updateUI()
+
+-- ================== LOOP REJOIN ==================
+task.spawn(function()
+    while true do
+        if isRejoinEnabled then
+            print("Đang chờ 5 phút trước khi rejoin...")
+            task.wait(300)
+
+            if isRejoinEnabled then
+                print("Rejoin ngay!")
+                TeleportService:TeleportToPlaceInstance(placeId, jobId, player)
+            end
+        else
+            task.wait(1)
+        end
+    end
+end)
+
+-- ================== TOGGLE ==================
+toggleButton.MouseButton1Click:Connect(function()
+    isRejoinEnabled = not isRejoinEnabled
+    updateUI()
+end)
