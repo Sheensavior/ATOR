@@ -33,7 +33,7 @@ task.spawn(function()
     while true do
         if isRejoinEnabled then
             print("Đang chờ 5 phút trước khi rejoin...")
-            task.wait(300)
+            task.wait(1800)
 
             if isRejoinEnabled then
                 print("Rejoin ngay!")
