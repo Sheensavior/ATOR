@@ -41,9 +41,6 @@ label.Parent = frame
 
 print("Auto Smart automatic đang hoạt động")
 
-# Script Logic Hoàn Chỉnh Theo Điều Kiện Prestige / Slot / Gems / Gold
-
-```lua
 repeat task.wait() until game:IsLoaded()
 
 local Players = game:GetService("Players")
