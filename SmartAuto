@@ -41,6 +41,9 @@ label.Parent = frame
 
 print("Auto Smart automatic đang hoạt động")
 
+# Script Logic Hoàn Chỉnh Theo Điều Kiện Prestige / Slot / Gems / Gold
+
+```lua
 repeat task.wait() until game:IsLoaded()
 
 local Players = game:GetService("Players")
@@ -118,4 +121,272 @@ local function parseNumber(text)
 
     local num = tonumber(text)
     return num or 0
+end
+
+local function getGold()
+    local text = player.PlayerGui
+        :WaitForChild("Interface")
+        :WaitForChild("Topbar")
+        :WaitForChild("Main")
+        :WaitForChild("Currencies")
+        :WaitForChild("Gold")
+        :WaitForChild("Amount")
+        .Text
+
+    return parseNumber(text)
+end
+
+local function getGems()
+    local text = player.PlayerGui
+        :WaitForChild("Interface")
+        :WaitForChild("Topbar")
+        :WaitForChild("Main")
+        :WaitForChild("Currencies")
+        :WaitForChild("Gems")
+        :WaitForChild("Amount")
+        .Text
+
+    return parseNumber(text)
+end
+
+local function getLevel()
+    local text = player.PlayerGui.Interface.Gear_Up.HUD.Level.Title.Text
+
+    text = text:gsub("LV%.", "")
+
+    return tonumber(text) or 0
+end
+
+-- =========================
+-- PRESTIGE
+-- =========================
+local prestigeMap = {
+    ["rbxassetid://15912127501"] = 1,
+    ["rbxassetid://15912227453"] = 2,
+    ["rbxassetid://15912229007"] = 3,
+    ["rbxassetid://85222435330048"] = 4,
+    ["rbxassetid://78762070666791"] = 5,
+}
+
+local function getPrestige()
+    local rank = player.PlayerGui
+        :WaitForChild("Interface")
+        :WaitForChild("Gear_Up")
+        :WaitForChild("Playerlist")
+        :WaitForChild("Local")
+        :WaitForChild("Side")
+        :WaitForChild("Prestige")
+        :WaitForChild("Rank")
+
+    return prestigeMap[rank.Image] or 0
+end
+
+-- =========================
+-- SLOT
+-- =========================
+local function getSlot()
+    local raw = safeRead(slotPath)
+
+    if not raw then
+        return "A"
+    end
+
+    raw = raw:gsub("%s+", "")
+
+    return raw
+end
+
+local function setSlot(newSlot)
+    writefile(slotPath, newSlot)
+end
+
+-- =========================
+-- MODIFY CONFIG
+-- =========================
+local function modifyConfig(options)
+    local data = loadConfig()
+    if not data then
+        return
+    end
+
+    for _, obj in pairs(data.objects) do
+
+        if obj.idx == "KickPlayersToggle" and options.kick ~= nil then
+            obj.value = options.kick
+        end
+
+        if obj.idx == "AutoJoinMissionsToggle" and options.autoConnect ~= nil then
+            obj.value = options.autoConnect
+        end
+
+        if obj.idx == "SpinsKeepToggle" and options.keepSpin ~= nil then
+            obj.value = options.keepSpin
+        end
+
+        if obj.idx == "SpinsToggle" and options.autoSpin ~= nil then
+            obj.value = options.autoSpin
+        end
+
+        if obj.idx == "AutoBoostToggle" and options.autoBoost ~= nil then
+            obj.value = options.autoBoost
+        end
+
+        if obj.idx == "SpinsDrop" and options.spinAmount then
+            obj.value = options.spinAmount
+        end
+
+        if obj.idx == "boostsDropdown" then
+            obj.value = obj.value or {}
+
+            if options.addXPBoost then
+                obj.value["2x XP Boost [2h]"] = true
+            end
+
+            if options.removeXPBoost then
+                obj.value["2x XP Boost [2h]"] = nil
+            end
+
+            if options.forceGoldBoost then
+                obj.value["2x Gold Boost [2h]"] = true
+            end
+        end
+    end
+
+    saveConfig(data)
+    print("Đã sửa config")
+end
+
+-- =========================
+-- MAIN LOGIC
+-- =========================
+local function processLogic()
+    local prestige = getPrestige()
+    local gold = getGold()
+    local gems = getGems()
+    local level = getLevel()
+    local slot = getSlot()
+
+    print("Prestige:", prestige)
+    print("Gold:", gold)
+    print("Gems:", gems)
+    print("Level:", level)
+    print("Slot:", slot)
+
+    -- =========================
+    -- GLOBAL RULE
+    -- =========================
+    if prestige == 1 or (prestige == 2 and level < 100) then
+        modifyConfig({
+            addXPBoost = true
+        })
+    end
+
+    if prestige == 2 and level >= 100 then
+        modifyConfig({
+            removeXPBoost = true
+        })
+    end
+
+    -- =========================
+    -- SLOT A / B
+    -- =========================
+    if slot == "A" or slot == "B" then
+
+        if prestige == 4 and gold > 1000000000 then
+            task.wait(15)
+
+            modifyConfig({
+                kick = false,
+                autoConnect = false,
+                addXPBoost = true,
+                keepSpin = true,
+                autoSpin = true,
+                forceGoldBoost = true
+            })
+
+            task.wait(1)
+            TeleportService:Teleport(game.PlaceId)
+        end
+
+        if prestige == 5 and gems > 50000 then
+            task.wait(15)
+
+            modifyConfig({
+                kick = false,
+                autoConnect = false,
+                addXPBoost = true,
+                keepSpin = true,
+                autoSpin = true,
+                spinAmount = "250 Spins",
+                forceGoldBoost = true
+            })
+
+            task.wait(1)
+            TeleportService:Teleport(game.PlaceId)
+        end
+
+        if prestige == 5 and gems <= 49999 and gems >= 23000 then
+            task.wait(15)
+
+            modifyConfig({
+                kick = false,
+                autoConnect = false,
+                addXPBoost = true,
+                keepSpin = true,
+                autoSpin = true,
+                spinAmount = "100 Spins",
+                forceGoldBoost = true
+            })
+
+            task.wait(1)
+            TeleportService:Teleport(game.PlaceId)
+        end
+
+        if prestige == 5 and gems <= 22999 and gems >= 10000 then
+            task.wait(15)
+
+            modifyConfig({
+                kick = true,
+                autoConnect = true,
+                keepSpin = false,
+                autoSpin = false,
+                spinAmount = "500 Spins"
+            })
+
+            if slot == "A" then
+                setSlot("B")
+            elseif slot == "B" then
+                setSlot("C")
+            end
+
+            task.wait(1)
+            TeleportService:Teleport(13379208636)
+        end
+    end
+
+    -- =========================
+    -- SLOT C
+    -- =========================
+    if slot == "C" then
+
+        if prestige == 4 and gold > 1000000000 then
+            task.wait(15)
+
+            modifyConfig({
+                autoBoost = false,
+                keepSpin = true,
+                autoSpin = true,
+                spinAmount = "500 Spins"
+            })
+
+            task.wait(1)
+            TeleportService:Teleport(game.PlaceId)
+        end
+    end
+end
+
+-- =========================
+-- START
+-- =========================
 processLogic()
+
