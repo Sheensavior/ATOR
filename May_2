@@ -148,16 +148,26 @@ end
 -- =========================
 -- GOLD BOOST TIME
 -- =========================
-local function getGoldBoostTime()
-    local success, result = pcall(function()
+local function isGoldBoostActive()
+    local success, text = pcall(function()
         return player.PlayerGui.Interface.HUD.Main.Top_Boosts.Gold.Time.Time.Text
     end)
 
-    if success then
-        return result
+    if not success then
+        return false
     end
 
-    return nil
+    text = tostring(text)
+
+    if text == "" then
+        return false
+    end
+
+    if text == "00:00" or text == "0:00" then
+        return false
+    end
+
+    return true
 end
 
 -- =========================
@@ -421,10 +431,7 @@ if game.PlaceId ~= MAIN_PLACE and game.PlaceId ~= RETURN_PLACE then
     if shouldCheckGoldBoost(slot, data.prestige) then
         task.spawn(function()
             while task.wait(10) do
-
-                local goldTime = getGoldBoostTime()
-
-                if goldTime == "00:00" then
+                if not isGoldBoostActive() then
                     print("Gold Boost hết giờ -> Teleport")
                     TeleportService:Teleport(RETURN_PLACE, player)
                     break
