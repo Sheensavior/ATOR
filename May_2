@@ -9,6 +9,12 @@ local player = Players.LocalPlayer
 local placeId = game.PlaceId
 local jobId = game.JobId
 
+local function rejoinCurrentServer()
+    pcall(function()
+        TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, player)
+    end)
+end
+
 -- =========================
 -- SETTINGS
 -- =========================
@@ -400,7 +406,7 @@ if game.PlaceId ~= MAIN_PLACE and game.PlaceId ~= RETURN_PLACE then
     print("Remaining Matches:", data.matchCount)
 
     if data.matchCount <= 0 then
-        TeleportService:Teleport(RETURN_PLACE, player)
+        rejoinCurrentServer()
     end
 end
 
@@ -448,7 +454,7 @@ if game.PlaceId ~= MAIN_PLACE and game.PlaceId ~= RETURN_PLACE then
                     print("Teleport vì Gold Boost hết")
 
                     pcall(function()
-                        TeleportService:Teleport(RETURN_PLACE, player)
+                        rejoinCurrentServer()
                     end)
 
                     break
