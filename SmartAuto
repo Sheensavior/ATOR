@@ -282,6 +282,10 @@ local function processLogic()
         modifyConfig({
             removeXPBoost = true
         })
+    if prestige == 3 then
+        modifyConfig({
+            removeXPBoost = true
+        })
     end
 
     -- =========================
