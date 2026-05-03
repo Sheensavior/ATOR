@@ -426,18 +426,35 @@ end
 
 if game.PlaceId ~= MAIN_PLACE and game.PlaceId ~= RETURN_PLACE then
 
-    local slot = getSlot()
+    task.spawn(function()
 
-    if shouldCheckGoldBoost(slot, data.prestige) then
-        task.spawn(function()
-            while task.wait(10) do
+        while task.wait(5) do
+
+            local currentData = loadJson()
+
+            local slot = getSlot()
+            local prestige = tonumber(currentData.prestige) or 0
+
+            print("===== GOLD CHECK =====")
+            print("Slot:", slot)
+            print("Prestige:", prestige)
+            print("CanCheck:", shouldCheckGoldBoost(slot, prestige))
+            print("GoldActive:", isGoldBoostActive())
+
+            if shouldCheckGoldBoost(slot, prestige) then
+
                 if not isGoldBoostActive() then
-                    print("Gold Boost hết giờ -> Teleport")
-                    TeleportService:Teleport(RETURN_PLACE, player)
+
+                    print("Teleport vì Gold Boost hết")
+
+                    pcall(function()
+                        TeleportService:Teleport(RETURN_PLACE, player)
+                    end)
+
                     break
                 end
             end
-        end)
-    end
+        end
+    end)
 end
 
