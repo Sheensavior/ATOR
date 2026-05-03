@@ -332,7 +332,7 @@ if game.PlaceId == MAIN_PLACE then
     local grade = ""
 
     local titlePath = player.PlayerGui.Interface.Equipment.Categories.Upgrades.Main.Title
-    task.wait(15)
+    task.wait(20)
 
     local function clickOpenUI()
         VirtualInputManager:SendMouseMoveEvent(250, 50, game)
