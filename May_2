@@ -1,21 +1,90 @@
--- =========================
 -- SERVICES
 -- =========================
-local Players = game:GetService("Players")
 local TeleportService = game:GetService("TeleportService")
+local Players = game:GetService("Players")
 local VirtualInputManager = game:GetService("VirtualInputManager")
 local HttpService = game:GetService("HttpService")
 
 local player = Players.LocalPlayer
+local placeId = game.PlaceId
+local jobId = game.JobId
 
 -- =========================
--- CONFIG
+-- SETTINGS
+-- =========================
+local isRejoinEnabled = true
+local rejoinDelay = 240 -- giây
+
+-- =========================
+-- PLACE CONFIG
 -- =========================
 local MAIN_PLACE = 14916516914
 local RETURN_PLACE = 13379208636
 
+-- =========================
+-- FILE PATHS
+-- =========================
+local filePath = "Violet/AOTR/settings/Auto Farm.json"
 local jsonPath = "prestige_data.json"
 local autoLoadPath = "Violet/AOTR/Menu/settings/autoload.txt"
+
+-- =========================
+-- USERNAME LIST
+-- =========================
+local usernames = {
+    "Everly_Sparkly1860",
+    "Harp3rRock3t5717",
+    "SabirThunder4256",
+    "Drift_Rift9878",
+    "Mirage_Ninja4473",
+    "SusanEchoX5780",
+    "PaisleyCookieStorm19",
+    "LegendFr0stV0id20014",
+    "PixelTurb02160",
+    "Block_Turbo6752",
+    "Micha3lOblivion8184",
+    "Sana_Aqua6186",
+    "MarkByte4812",
+    "X1logr1mr253",
+    "Syndg4lek4i925",
+    "L3g3ndZap7257",
+    "Timothy_Cookie4162",
+    "XxHazelAlphaDawnxXYT",
+    "Jamila_PhantomRunn3r",
+    "CitraSanti02",
+    "UchidaLieselotte1995",
+    "R4enjinn366",
+    "J3x1brak2008684"
+}
+
+-- =========================
+-- WEBHOOK LIST
+-- =========================
+local webhooks = {
+    "https://discord.com/api/webhooks/1035131306511708202/jw1TpsXj16ZGhge7I8gCvSw6AiHypynKZtZnqWpRD2LrH_-BHNPVKNQcSk5rFva3P5Es",
+    "https://discord.com/api/webhooks/1040301928908865589/N49TmSbWCT8sP-gOF4Sfdb55SR5UNQTi2k1-S7cre2rAtcd59wh6gQ66eqLpJmoIJg6i",
+    "https://discord.com/api/webhooks/1040900228464783372/JKWlDzhXFY4EE3pL1LHWOJS8rF6vnkyLpvOz6y-tJYdyxQF744nIF1GlQZknXpVf-ArR",
+    "https://discord.com/api/webhooks/1041015639676035153/j3QhMe6yBmvbtuHUGUAE5tCLfXzAgcM6_Uj18uY4uvbDcN6lbuEXfc6dHQ02znTwME4D",
+    "https://discord.com/api/webhooks/1113098938032066572/v5yb3j2sNBc0uWfriVNUlSoK1Fe4FE8LTqvyIEG57hTqrQMX-cpwdrxjpBJcU8oZHL87",
+    "https://discord.com/api/webhooks/1440499632290402375/jH0v1Vh22RvMapDUqSstcCta8PT9j8U1ZAwrXgh3dsoe0e07hsTWJYtM5C-myqCLOHVB",
+    "https://discord.com/api/webhooks/1440500130804666443/d0raDXsy0ps7rHQWPyP48rDX1iWCPl3pGEn2xNHAVSMwqXFAnnC32iENNjLumd67XGxn",
+    "https://discord.com/api/webhooks/1441592824381313116/lD2HblN2AwwtF-Fc_PexuQPayOIEvPIgMSr4e3XV8lBxmeyG65CS60dYtvymA1bp9-St",
+    "https://discord.com/api/webhooks/1441596183066841158/X7jjCFGfMURWTsRoQO5hxeXcJAePucE66mhay86nJC59qgn0-c-szBROZY-pmJbvqOSO",
+    "https://discord.com/api/webhooks/1441600933808046273/Ou1tT_f_y9U3YmZqGId2pQhqDCLrG-Lggt5JgtxHRn6ntgwATtXlmBfGBbN1L4iTfW7X",
+    "https://discord.com/api/webhooks/1442014424012427400/prbY_aUcdBa9Z3E-W9PQG5jXx647VPaRNRVkynCcPgZkg3MLL_tdrRoPhwrrqoVL3MtV",
+    "https://discord.com/api/webhooks/1442015016764182664/XxG0pCiFZ4sByrDYqGYvqST28MjClEiuLEQDu1M24BE48HJIfiIj-g_Ln47gO8Oceu1Q",
+    "https://discord.com/api/webhooks/1442399217686417439/em4zNi77vhZGtvTR-CHHSb3HC_obAIYbYAw0UH1dqQfxe5veyZ6OagL6QeQgN9rhbfi-",
+    "https://discord.com/api/webhooks/1442400026545356810/cwoJ0zN0svNDT8IiwObirDPWJ3BRlFtVn0eYp-0WiMj5Lu2ME54TYkWs86bgbwGtHcTd",
+    "https://discord.com/api/webhooks/1453861857822773400/exh3XImlXGmhxCqwfDzEBIjb4vr3T5PGv3FRe0HzUegMiB0X2qCfYItOZkYVbXIvRw__",
+    "https://discord.com/api/webhooks/1453862484116246671/hLTgXF42XCFE9xHU-1J4H1MnZj4EcubU9mneIFhAuOWs48WUjKCYwtH-t1rdPDDNElbM",
+    "https://discord.com/api/webhooks/1453866069935652896/5GOd__GbPvwH9PD3tJwQaOOnfjMh9j6T_YzGN4u3z99nxP8Ux3hgPHhNYwsxwAO2VPRX",
+    "https://discord.com/api/webhooks/1453866290438737993/PbyMrmHWrELxYSJ6UpUeAEhMQJ18EkLYYjDh9lGo34UaE-yku5ZhxnBlltSY_n7fbtIx",
+    "https://discord.com/api/webhooks/1453866600632553666/m-derunTrbQf1Pom-DF5543xYCLuipKJz8S3FmAQrB8lQrVCBdOCi8PE0tjKHRohPnkf",
+    "https://discord.com/api/webhooks/1460694215536283770/1kYfmr6jfb4dzHiSN89FARKzivHiYoiy_MruNnjdVjcaY-BHZWFeaA5_OWiU8owJOe99",
+    "https://discord.com/api/webhooks/1460694398961455179/3tSSwtS35iwzPPMCf2iCLs_iBMhssk1L7Pdms3GiEjxPo24gfkgCvCnVHciU8XhhV0lV",
+    "https://discord.com/api/webhooks/1460694700318130334/xP8z0jeK2_2ARW-J5LVPOcMbL7_UjivjPgfAx_3wHCdd69-dhopjYUkaMaiRwSoBHuEL",
+    "https://discord.com/api/webhooks/1460694879301669058/LEfv9L_igNygHaPyJhUsZEnVEVn0dHBvp8dj2zN4MILAkUVFLxQZIPaDqcSo-xN_GcjV"
+}
 
 -- =========================
 -- FILE FUNCTIONS
@@ -57,7 +126,7 @@ local prestigeMap = {
 }
 
 -- =========================
--- FUNCTION: GET SLOT
+-- AUTOLOAD SLOT
 -- =========================
 local function getSlot()
     if isfile(autoLoadPath) then
@@ -77,7 +146,7 @@ local function getSlot()
 end
 
 -- =========================
--- FUNCTION: CHECK GOLD BOOST TIME
+-- GOLD BOOST TIME
 -- =========================
 local function getGoldBoostTime()
     local success, result = pcall(function()
@@ -90,6 +159,120 @@ local function getGoldBoostTime()
 
     return nil
 end
+
+-- =========================
+-- UPDATE WEBHOOK JSON
+-- =========================
+task.spawn(function()
+
+    local webhookMap = {}
+
+    for i, username in ipairs(usernames) do
+        webhookMap[username] = webhooks[i]
+    end
+
+    local selectedWebhook = webhookMap[player.Name]
+
+    if not selectedWebhook then
+        warn("Không tìm thấy webhook cho account:", player.Name)
+        return
+    end
+
+    if not isfile(filePath) then
+        warn("Không tìm thấy file:", filePath)
+        return
+    end
+
+    local success, err = pcall(function()
+
+        local raw = readfile(filePath)
+        local dataFile = HttpService:JSONDecode(raw)
+
+        for _, obj in ipairs(dataFile.objects) do
+            if obj.idx == "WebhookLinkTextBox" then
+                obj.text = selectedWebhook
+                break
+            end
+        end
+
+        writefile(filePath, HttpService:JSONEncode(dataFile))
+
+    end)
+
+    if success then
+        print("Webhook updated:", player.Name)
+    else
+        warn("Lỗi update webhook:", err)
+    end
+
+end)
+
+-- =========================
+-- GUI
+-- =========================
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "RejoinGui"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+local toggleButton = Instance.new("TextButton")
+toggleButton.Parent = screenGui
+toggleButton.Size = UDim2.new(0, 200, 0, 50)
+toggleButton.Position = UDim2.new(0, 20, 0.5, -25)
+toggleButton.TextColor3 = Color3.fromRGB(255,255,255)
+toggleButton.TextScaled = true
+toggleButton.BorderSizePixel = 0
+
+local function updateUI()
+    toggleButton.Text = "Rejoin: " .. (isRejoinEnabled and "Bật" or "Tắt")
+
+    if isRejoinEnabled then
+        toggleButton.BackgroundColor3 = Color3.fromRGB(0,255,0)
+    else
+        toggleButton.BackgroundColor3 = Color3.fromRGB(255,0,0)
+    end
+end
+
+updateUI()
+
+-- =========================
+-- REJOIN LOOP
+-- =========================
+task.spawn(function()
+
+    while true do
+
+        if isRejoinEnabled then
+
+            print("Đợi rejoin:", rejoinDelay, "giây")
+
+            task.wait(rejoinDelay)
+
+            if isRejoinEnabled then
+
+                print("Rejoin server hiện tại")
+
+                pcall(function()
+                    TeleportService:TeleportToPlaceInstance(placeId, jobId, player)
+                end)
+
+            end
+
+        else
+            task.wait(1)
+        end
+
+    end
+
+end)
+
+-- =========================
+-- BUTTON TOGGLE
+-- =========================
+toggleButton.MouseButton1Click:Connect(function()
+    isRejoinEnabled = not isRejoinEnabled
+    updateUI()
+end)
 
 -- =========================
 -- MAIN PLACE LOGIC
@@ -107,9 +290,6 @@ if game.PlaceId == MAIN_PLACE then
 
     task.wait(2)
 
-    -- =========================
-    -- CHECK PRESTIGE 0 VIA POSITION
-    -- =========================
     local prestige = 0
 
     local pos = rankFrame.AbsolutePosition
@@ -133,9 +313,6 @@ if game.PlaceId == MAIN_PLACE then
         prestige = prestigeMap[imageId] or 0
     end
 
-    -- =========================
-    -- CLICK UNTIL GRADE FOUND
-    -- =========================
     local grade = ""
 
     local titlePath = player.PlayerGui.Interface.Equipment.Categories.Upgrades.Main.Title
@@ -168,9 +345,6 @@ if game.PlaceId == MAIN_PLACE then
         task.wait(0.5)
     end
 
-    -- =========================
-    -- CALCULATE MATCH COUNT
-    -- =========================
     local matchCount = 999
 
     if prestige == 0 then
@@ -185,9 +359,6 @@ if game.PlaceId == MAIN_PLACE then
         matchCount = 999
     end
 
-    -- =========================
-    -- SAVE JSON
-    -- =========================
     data.prestige = prestige
     data.grade = grade
     data.matchCount = matchCount
@@ -198,7 +369,6 @@ if game.PlaceId == MAIN_PLACE then
     print("Prestige:", prestige)
     print("Grade:", grade)
     print("Match Count:", matchCount)
-
 end
 
 -- =========================
@@ -243,215 +413,23 @@ local function shouldCheckGoldBoost(slot, prestige)
     return true
 end
 
-local slot = getSlot()
+if game.PlaceId ~= MAIN_PLACE and game.PlaceId ~= RETURN_PLACE then
 
-if shouldCheckGoldBoost(slot, data.prestige) then
+    local slot = getSlot()
 
-    task.spawn(function()
-        while task.wait(10) do
+    if shouldCheckGoldBoost(slot, data.prestige) then
+        task.spawn(function()
+            while task.wait(10) do
 
-            local goldTime = getGoldBoostTime()
+                local goldTime = getGoldBoostTime()
 
-            if goldTime == "00:00" then
-                print("Gold Boost hết giờ -> Teleport")
-                TeleportService:Teleport(RETURN_PLACE, player)
-                break
+                if goldTime == "00:00" then
+                    print("Gold Boost hết giờ -> Teleport")
+                    TeleportService:Teleport(RETURN_PLACE, player)
+                    break
+                end
             end
-        end
-    end)
+        end)
+    end
 end
-```
-
-# JSON sẽ lưu dạng:
-
-```json
-{
-    "prestige": 2,
-    "grade": "B+",
-    "matchCount": 15,
-    "totalCount": 41
-}
-```
-
-# File tạo ra
-
-* `prestige_data.json`
-* `Violet/AOTR/Menu/settings/autoload.txt`
-
-# Giải thích nhanh
-
-* `prestige` = cấp prestige
-* `grade` = grade hiện tại
-* `matchCount` = số trận còn lại
-* `totalCount` = tổng số trận đã hoàn thành
-* Vào PlaceId `14916516914` sẽ cập nhật lại toàn bộ
-* Khi ở game khác sẽ trừ matchCount
-* Khi matchCount = 0 → teleport về Place `13379208636`
-* Nếu Gold Boost = `00:00` → teleport về Place `13379208636`
-
----
-
-# Script hợp nhất với Auto Rejoin + Webhook Update
-
-Thêm đoạn bên dưới vào cuối script để dùng chung toàn bộ trong 1 file:
-
-```lua
--- =========================
--- EXTRA SERVICES
--- =========================
-local placeId = game.PlaceId
-local jobId = game.JobId
-
--- =========================
--- REJOIN SETTINGS
--- =========================
-local isRejoinEnabled = true
-local rejoinDelay = 240
-
--- =========================
--- AUTO FARM FILE
--- =========================
-local autoFarmFile = "Violet/AOTR/settings/Auto Farm.json"
-
--- =========================
--- USERNAME LIST
--- =========================
-local usernames = {
-    "Everly_Sparkly1860",
-    "Harp3rRock3t5717",
-    "SabirThunder4256",
-    "Drift_Rift9878",
-    "Mirage_Ninja4473",
-    "SusanEchoX5780",
-    "PaisleyCookieStorm19",
-    "LegendFr0stV0id20014",
-    "PixelTurb02160",
-    "Block_Turbo6752",
-    "Micha3lOblivion8184",
-    "Sana_Aqua6186",
-    "MarkByte4812",
-    "X1logr1mr253",
-    "Syndg4lek4i925",
-    "L3g3ndZap7257",
-    "Timothy_Cookie4162",
-    "XxHazelAlphaDawnxXYT",
-    "Jamila_PhantomRunn3r",
-    "CitraSanti02",
-    "UchidaLieselotte1995",
-    "R4enjinn366",
-    "J3x1brak2008684"
-}
-
--- =========================
--- WEBHOOK LIST
--- =========================
-local webhooks = {
-    -- dán nguyên list webhook của bạn vào đây
-}
-
--- =========================
--- UPDATE WEBHOOK
--- =========================
-task.spawn(function()
-
-    local webhookMap = {}
-
-    for i, username in ipairs(usernames) do
-        webhookMap[username] = webhooks[i]
-    end
-
-    local selectedWebhook = webhookMap[player.Name]
-
-    if not selectedWebhook then
-        return
-    end
-
-    if not isfile(autoFarmFile) then
-        return
-    end
-
-    pcall(function()
-
-        local raw = readfile(autoFarmFile)
-        local decoded = HttpService:JSONDecode(raw)
-
-        for _, obj in ipairs(decoded.objects) do
-            if obj.idx == "WebhookLinkTextBox" then
-                obj.text = selectedWebhook
-                break
-            end
-        end
-
-        writefile(autoFarmFile, HttpService:JSONEncode(decoded))
-
-    end)
-
-end)
-
--- =========================
--- GUI REJOIN
--- =========================
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "RejoinGui"
-screenGui.ResetOnSpawn = false
-screenGui.Parent = player:WaitForChild("PlayerGui")
-
-local toggleButton = Instance.new("TextButton")
-toggleButton.Parent = screenGui
-toggleButton.Size = UDim2.new(0, 200, 0, 50)
-toggleButton.Position = UDim2.new(0, 20, 0.5, -25)
-toggleButton.TextScaled = true
-toggleButton.TextColor3 = Color3.new(1,1,1)
-toggleButton.BorderSizePixel = 0
-
-local function updateUI()
-
-    toggleButton.Text = "Rejoin: " .. (isRejoinEnabled and "Bật" or "Tắt")
-
-    if isRejoinEnabled then
-        toggleButton.BackgroundColor3 = Color3.fromRGB(0,255,0)
-    else
-        toggleButton.BackgroundColor3 = Color3.fromRGB(255,0,0)
-    end
-
-end
-
-updateUI()
-
--- =========================
--- AUTO REJOIN LOOP
--- =========================
-task.spawn(function()
-
-    while true do
-
-        if isRejoinEnabled then
-
-            task.wait(rejoinDelay)
-
-            if isRejoinEnabled then
-
-                pcall(function()
-                    TeleportService:TeleportToPlaceInstance(placeId, jobId, player)
-                end)
-
-            end
-
-        else
-            task.wait(1)
-        end
-
-    end
-
-end)
-
--- =========================
--- TOGGLE BUTTON
--- =========================
-toggleButton.MouseButton1Click:Connect(function()
-
-    isRejoinEnabled = not isRejoinEnabled
-    updateUI()
-
-end)
 
