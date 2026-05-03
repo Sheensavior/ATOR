@@ -13,7 +13,7 @@ local jobId = game.JobId
 -- SETTINGS
 -- =========================
 local isRejoinEnabled = true
-local rejoinDelay = 300 -- 30 phút
+local rejoinDelay = 240 -- 30 phút
 
 -- =========================
 -- FILE PATH
