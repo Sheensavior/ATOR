@@ -1,3 +1,6 @@
+if game.PlaceId == 14932214603 then
+    return
+end
 -- SERVICES
 -- =========================
 local TeleportService = game:GetService("TeleportService")
