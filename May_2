@@ -19,7 +19,7 @@ end
 -- SETTINGS
 -- =========================
 local isRejoinEnabled = true
-local rejoinDelay = 240 -- giây
+local rejoinDelay = 90 -- giây
 
 -- =========================
 -- PLACE CONFIG
