@@ -1,52 +1,496 @@
+if game.PlaceId == 14932214603 then
+    return
+end
+-- SERVICES
+-- =========================
 local TeleportService = game:GetService("TeleportService")
 local Players = game:GetService("Players")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local HttpService = game:GetService("HttpService")
 
 local player = Players.LocalPlayer
 local placeId = game.PlaceId
 local jobId = game.JobId
 
--- 🔁 mặc định luôn bật
-local isRejoinEnabled = true
+local function rejoinCurrentServer()
+    pcall(function()
+        TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, player)
+    end)
+end
 
--- ================== GUI ==================
+-- =========================
+-- SETTINGS
+-- =========================
+local isRejoinEnabled = true
+local rejoinDelay = 90 -- giây
+
+-- =========================
+-- PLACE CONFIG
+-- =========================
+local MAIN_PLACE = 14916516914
+local RETURN_PLACE = 13379208636
+
+-- =========================
+-- FILE PATHS
+-- =========================
+local filePath = "Violet/AOTR/settings/Auto Farm.json"
+local jsonPath = "prestige_data.json"
+local autoLoadPath = "Violet/AOTR/Menu/settings/autoload.txt"
+
+-- =========================
+-- USERNAME LIST
+-- =========================
+local usernames = {
+    "Ash3n_StormChas3r989",
+    "Vanta_Code3782",
+    "XxAur0raNe0nStealthx",
+    "GhostNovaInferno2010",
+    "Z3n0lynx757",
+    "Nasir_Hollow7910",
+    "LivVandermeer2004",
+    "VegardPillai09",
+    "Jornpyre709",
+    "EoinVanwijk2005",
+    "Frances_Z00m4110",
+    "SophiaLucky8126",
+    "St3alth_Rift7345",
+    "NorbertThomp08",
+    "JackFireBane40",
+    "ThornFrost4088",
+    "KentoKudo2010",
+    "CosmicRunnerHero6829",
+    "Mari3Frostbit3579",
+    "HermansUtami1997",
+    "SariPascual2002",
+    "Ic3_Pix3l5863",
+    "CharlesBlock2258"
+}
+
+-- =========================
+-- WEBHOOK LIST
+-- =========================
+local webhooks = {
+    "https://discord.com/api/webhooks/1446345733933502604/GbuOCcPKV-PVy65bNlijHMTH07KIy9htCxAOE7Y2j_MuxYqKoQuX-YejHc0T0OcwLPKc",
+    "https://discord.com/api/webhooks/1446346330493681745/C-WXLzFd525guRd2tW_EIq3SFA42BW0FIJZBLfokoQRat1yNtFz0k46GOenwPe7w9Oz4",
+    "https://discord.com/api/webhooks/1446346938260918353/N9_gPMi6NbUY2mN_8oeRGXHmOct0tOMzY47NF37hZIeYn-2sT1Af9alzktavpp6AucrF",
+    "https://discord.com/api/webhooks/1446347203621683200/WCV_5LZJModuxdWPN_jEEoIi7GPZT-C27Ng8iwKjcPVbqBfONBWBV4B8zjTPYWufFR4Y",
+    "https://discord.com/api/webhooks/1446348273290838018/T8HOdCtbrb4_Zcp8Iz66JIfEG2KJfocKFoOrVLm1nYqCWO1QMyrs3X56nHBd4CAbj3iQ",
+    "https://discord.com/api/webhooks/1446348781053280348/L3TPGtKIAf_dH0SW_YUu9uYuzjc9WCatMU3VZpNAIAZVkS3XRaaYFyWdvvB3kf3ErAJf",
+    "https://discord.com/api/webhooks/1446349339449622659/xzQdgD5Ghl_5dkoVP4h0XIuA8-vYpqBWpK-vXQ5wh8tyA4Qejc_IdjlQkXLN0QGd8qAu",
+    "https://discord.com/api/webhooks/1446349757508485313/wnr9x-BkA3wtf9OhVcP4n7FU4mjT-pNjhSE96-ppbAjbZyQ6MiVxMudmVY_qY8Y611zU",
+    "https://discord.com/api/webhooks/1446350106466058322/rPDa1t_2lw5_-KKx_YIm55f1OwOsfSi4-f1kDmPFxd-JdpTHnB51IuwGVZi162pOhuTX",
+    "https://discord.com/api/webhooks/1446352270328594503/u2GxKUMSdXUIEtgQtYppq3I4qZT0gIXLxsC-DvKnLgbQlNtbxWCSIFpLrsEOwYPDhpvz",
+    "https://discord.com/api/webhooks/1446353213203808408/k6jVJGmWNKTm5JGjHHDOGGZEJ-9VPqBXpDHoZ9AjEocgn6Hgs9DfT8Iq-O7KUuIrQ68c",
+    "https://discord.com/api/webhooks/1446354824303218790/2PVk0zQ1qPdIKEAyzBWkrGoYC_z7VoSNmoUbQaAqSSHDRw5qog3nI9N8rjat22nk19Fc",
+    "https://discord.com/api/webhooks/1446355339673862259/idhPvcMEgiXg-BeFtu4TO_hfbqwbqfXFpEfBieaHOkU6YqOCllzVAZnDAOV_8UPWy-kt",
+    "https://discord.com/api/webhooks/1446355701994881049/SApOPAHVNsbgleFxNULdnLtBvb_P8tzT_bWfbo9C60wseBjqid2Y_wDR_LuxSHXZCM9s",
+    "https://discord.com/api/webhooks/1446356115737542748/BRMhWtcw3uVhDp1y0B6sNV2do-ilCmS6UA9Zz7hOdsXzhpUW_Xwoy6hzvciLGMJUnqjo",
+    "https://discord.com/api/webhooks/1446356862189699193/8grjrhHt8uERrYHTApDfOqWGOX_SbaFla-Xmq5MGU5n-KGVSjhvkoJ6Vdu_mp7HuQFGN",
+    "https://discord.com/api/webhooks/1446357205887750237/qreKQgQ0SynRhhDwlK4Db9A0bc3lNDjbUn9L1wNGTGHvyDfqvBOhPmgaSvTLA1oeVzWq",
+    "https://discord.com/api/webhooks/1446357591771975737/sVFBc5ORhyXjTvqn_4OwPTsvE5r_vnnikSibJ5JD3ObD19blqYgMaSeUW8Aaqvrc-0sn",
+    "https://discord.com/api/webhooks/1446357809498423358/NBPqr5u0OvaFeVKxEI5ECRoSPelHQd17FFTt-3k7bhBxYlC9jdMjJPPHewe6KJOazssZ",
+    "https://discord.com/api/webhooks/1446358865489952922/Xji9-AWpsr36rhP-iOSQz4wvyBhXYGp7z7ev6O-71MxS2llXRoIuO-012rRW4TzOz86w",
+    "https://discord.com/api/webhooks/1453021647996063817/n-i83U8VrzkJURFt7cqm0Kd7tgEaKUiDdgb1kRkShnqZz7c5c4Py6Gu0nwvWufWt9taR",
+    "https://discord.com/api/webhooks/1453022899702202511/WOAJo-NfTGxcWGyIIbJTvfpz66Aa_9nUmCWyRWvZoLupORA83kam3FtPjNP009reL_WQ",
+    "https://discord.com/api/webhooks/1453022345269870715/5uugfQjDJEgd_cWPRihCtIyqtg_AVZqMX6ncDZ4oiDyMgH_G1FJ1iWfkq1OKUPayd49N"
+}
+
+-- =========================
+-- FILE FUNCTIONS
+-- =========================
+local function loadJson()
+    if isfile(jsonPath) then
+        local success, data = pcall(function()
+            return HttpService:JSONDecode(readfile(jsonPath))
+        end)
+
+        if success and data then
+            return data
+        end
+    end
+
+    return {
+        prestige = 0,
+        grade = "",
+        matchCount = 0,
+        totalCount = 0
+    }
+end
+
+local function saveJson(data)
+    writefile(jsonPath, HttpService:JSONEncode(data))
+end
+
+local data = loadJson()
+
+-- =========================
+-- PRESTIGE IMAGE MAP
+-- =========================
+local prestigeMap = {
+    ["rbxassetid://15912127501"] = 1,
+    ["rbxassetid://15912227453"] = 2,
+    ["rbxassetid://15912229007"] = 3,
+    ["rbxassetid://85222435330048"] = 4,
+    ["rbxassetid://78762070666791"] = 5,
+}
+
+-- =========================
+-- AUTOLOAD SLOT
+-- =========================
+local function getSlot()
+    if isfile(autoLoadPath) then
+        local content = readfile(autoLoadPath)
+        content = tostring(content):gsub("\n", ""):gsub("\r", "")
+
+        if content == "A" then
+            return "A"
+        elseif content == "B" then
+            return "B"
+        elseif content == "C" then
+            return "C"
+        end
+    end
+
+    return "UNKNOWN"
+end
+
+-- =========================
+-- GOLD BOOST TIME
+-- =========================
+local function isGoldBoostActive()
+    local success, text = pcall(function()
+        return player.PlayerGui.Interface.HUD.Main.Top_Boosts.Gold.Time.Time.Text
+    end)
+
+    if not success then
+        return false
+    end
+
+    text = tostring(text)
+
+    if text == "" then
+        return false
+    end
+
+    if text == "00:00" or text == "0:00" then
+        return false
+    end
+
+    return true
+end
+
+-- =========================
+-- UPDATE WEBHOOK JSON
+-- =========================
+task.spawn(function()
+
+    local webhookMap = {}
+
+    for i, username in ipairs(usernames) do
+        webhookMap[username] = webhooks[i]
+    end
+
+    local selectedWebhook = webhookMap[player.Name]
+
+    if not selectedWebhook then
+        warn("Không tìm thấy webhook cho account:", player.Name)
+        return
+    end
+
+    if not isfile(filePath) then
+        warn("Không tìm thấy file:", filePath)
+        return
+    end
+
+    local success, err = pcall(function()
+
+        local raw = readfile(filePath)
+        local dataFile = HttpService:JSONDecode(raw)
+
+        for _, obj in ipairs(dataFile.objects) do
+            if obj.idx == "WebhookLinkTextBox" then
+                obj.text = selectedWebhook
+                break
+            end
+        end
+
+        writefile(filePath, HttpService:JSONEncode(dataFile))
+
+    end)
+
+    if success then
+        print("Webhook updated:", player.Name)
+    else
+        warn("Lỗi update webhook:", err)
+    end
+
+end)
+
+-- =========================
+-- GUI
+-- =========================
 local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "RejoinGui"
+screenGui.ResetOnSpawn = false
 screenGui.Parent = player:WaitForChild("PlayerGui")
 
 local toggleButton = Instance.new("TextButton")
 toggleButton.Parent = screenGui
 toggleButton.Size = UDim2.new(0, 200, 0, 50)
 toggleButton.Position = UDim2.new(0, 20, 0.5, -25)
-toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleButton.TextColor3 = Color3.fromRGB(255,255,255)
+toggleButton.TextScaled = true
+toggleButton.BorderSizePixel = 0
 
--- 🎨 update UI
 local function updateUI()
     toggleButton.Text = "Rejoin: " .. (isRejoinEnabled and "Bật" or "Tắt")
-    toggleButton.BackgroundColor3 = isRejoinEnabled 
-        and Color3.fromRGB(0, 255, 0) 
-        or Color3.fromRGB(255, 0, 0)
+
+    if isRejoinEnabled then
+        toggleButton.BackgroundColor3 = Color3.fromRGB(0,255,0)
+    else
+        toggleButton.BackgroundColor3 = Color3.fromRGB(255,0,0)
+    end
 end
 
 updateUI()
 
--- ================== LOOP REJOIN ==================
+-- =========================
+-- REJOIN LOOP
+-- =========================
 task.spawn(function()
+
     while true do
+
         if isRejoinEnabled then
-            print("Đang chờ 5 phút trước khi rejoin...")
-            task.wait(1800)
+
+            local waitTime
+
+            if game.PlaceId == 13379208636 or game.PlaceId == 14916516914 then
+                waitTime = rejoinDelay
+            else
+                waitTime = 240
+            end
+
+            print("Đợi rejoin:", waitTime, "giây")
+
+            task.wait(waitTime)
 
             if isRejoinEnabled then
-                print("Rejoin ngay!")
-                TeleportService:TeleportToPlaceInstance(placeId, jobId, player)
+
+                print("Rejoin server hiện tại")
+
+                pcall(function()
+                    TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, player)
+                end)
+
             end
+
         else
             task.wait(1)
         end
+
     end
+
 end)
 
--- ================== TOGGLE ==================
+-- =========================
+-- BUTTON TOGGLE
+-- =========================
 toggleButton.MouseButton1Click:Connect(function()
     isRejoinEnabled = not isRejoinEnabled
     updateUI()
 end)
+
+-- =========================
+-- MAIN PLACE LOGIC
+-- =========================
+if game.PlaceId == MAIN_PLACE then
+
+    local rankFrame = player.PlayerGui
+        :WaitForChild("Interface")
+        :WaitForChild("Gear_Up")
+        :WaitForChild("Playerlist")
+        :WaitForChild("Local")
+        :WaitForChild("Side")
+        :WaitForChild("Prestige")
+        :WaitForChild("Rank")
+
+    task.wait(2)
+
+    local prestige = 0
+
+    local pos = rankFrame.AbsolutePosition
+
+    local roundedX = math.floor(pos.X * 100 + 0.5) / 100
+    local roundedY = math.floor(pos.Y * 100 + 0.5) / 100
+
+    local function closeEnough(a, b)
+        return math.abs(a - b) <= 2
+    end
+
+    if closeEnough(roundedX, 1584.32) and closeEnough(roundedY, -40.54) then
+        prestige = 0
+    else
+        local imageId = ""
+
+        pcall(function()
+            imageId = rankFrame.Image
+        end)
+
+        prestige = prestigeMap[imageId] or 0
+    end
+
+    local grade = ""
+
+    local titlePath = player.PlayerGui.Interface.Equipment.Categories.Upgrades.Main.Title
+    task.wait(20)
+
+    local function clickOpenUI()
+        VirtualInputManager:SendMouseMoveEvent(250, 50, game)
+        task.wait(0.1)
+        VirtualInputManager:SendMouseButtonEvent(250, 50, 0, true, game, 1)
+        task.wait(0.05)
+        VirtualInputManager:SendMouseButtonEvent(250, 50, 0, false, game, 1)
+    end
+
+    for i = 1, 50 do
+        local text = ""
+
+        pcall(function()
+            text = titlePath.Text
+        end)
+
+        if string.find(text, "GRADE") then
+            local extracted = string.match(text, "%[(.-)%sGRADE%]")
+
+            if extracted then
+                grade = extracted
+                break
+            end
+        end
+
+        clickOpenUI()
+        task.wait(0.5)
+    end
+
+    local matchCount = 999
+
+    local slot = getSlot()
+    local prestige = tonumber(prestige) or 0
+
+    local isSMinus = (grade == "S-")
+    
+    local function isSlotA()
+        return slot == "A"
+    end
+
+    local function isSlotBOrC()
+        return slot == "B" or slot == "C"
+    end
+
+    if isSlotA() and (prestige == 1 or prestige == 2) then
+        matchCount = 30
+
+    elseif isSlotA() and (prestige == 3 or prestige == 4 or prestige == 5) and not isSMinus then
+        matchCount = 15
+
+    elseif isSlotBOrC() and (
+        prestige == 1 or
+        prestige == 2 or
+        (prestige == 3 and not isSMinus) or
+        (prestige == 4 and not isSMinus) or
+        (prestige == 5 and not isSMinus)
+        ) then
+    matchCount = 15
+
+    else
+        matchCount = 999
+    end
+
+    data.prestige = prestige
+    data.grade = grade
+    data.matchCount = matchCount
+    data.totalCount = (data.totalCount or 0)
+
+    saveJson(data)
+
+    print("Prestige:", prestige)
+    print("Grade:", grade)
+    print("Match Count:", matchCount)
+end
+
+-- =========================
+-- MATCH COMPLETE LOGIC
+-- =========================
+if game.PlaceId ~= MAIN_PLACE and game.PlaceId ~= RETURN_PLACE then
+
+    data.matchCount = (data.matchCount or 0) - 1
+
+    if data.matchCount < 0 then
+        data.matchCount = 0
+    end
+
+    data.totalCount = (data.totalCount or 0) + 1
+
+    saveJson(data)
+
+    print("Remaining Matches:", data.matchCount)
+
+    if data.matchCount <= 0 then
+        rejoinCurrentServer()
+    end
+end
+
+-- =========================
+-- GOLD BOOST CHECK
+-- =========================
+local function shouldCheckGoldBoost(slot, prestige)
+
+    if slot == "A" and prestige == 0 then
+        return false
+    end
+
+    if slot == "A" and prestige == 1 then
+        return false
+    end
+
+    if prestige == 5 then
+        return false
+    end
+
+    return true
+end
+
+if game.PlaceId ~= MAIN_PLACE and game.PlaceId ~= RETURN_PLACE then
+
+    task.spawn(function()
+
+        while task.wait(5) do
+
+            local currentData = loadJson()
+
+            local slot = getSlot()
+            local prestige = tonumber(currentData.prestige) or 0
+
+            print("===== GOLD CHECK =====")
+            print("Slot:", slot)
+            print("Prestige:", prestige)
+            print("CanCheck:", shouldCheckGoldBoost(slot, prestige))
+            print("GoldActive:", isGoldBoostActive())
+
+            if shouldCheckGoldBoost(slot, prestige) then
+
+                if not isGoldBoostActive() then
+
+                    print("Teleport vì Gold Boost hết")
+
+                    pcall(function()
+                        rejoinCurrentServer()
+                    end)
+
+                    break
+                end
+            end
+        end
+    end)
+end
