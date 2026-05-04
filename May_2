@@ -375,14 +375,34 @@ if game.PlaceId == MAIN_PLACE then
 
     local matchCount = 999
 
-    if prestige == 0 then
-        matchCount = 10
-    elseif prestige == 1 then
-        matchCount = 13
-    elseif prestige == 2 then
+    local slot = getSlot()
+    local prestige = tonumber(prestige) or 0
+
+    local isSMinus = (grade == "S-")
+    
+    local function isSlotA()
+        return slot == "A"
+    end
+
+    local function isSlotBOrC()
+        return slot == "B" or slot == "C"
+    end
+
+    if isSlotA() and (prestige == 1 or prestige == 2) then
+        matchCount = 30
+
+    elseif isSlotA() and (prestige == 3 or prestige == 4 or prestige == 5) and not isSMinus then
         matchCount = 15
-    elseif prestige == 3 and grade ~= "S-" then
-        matchCount = 18
+
+    elseif isSlotBOrC() and (
+        prestige == 1 or
+        prestige == 2 or
+        (prestige == 3 and not isSMinus) or
+        (prestige == 4 and not isSMinus) or
+        (prestige == 5 and not isSMinus)
+        ) then
+    matchCount = 15
+
     else
         matchCount = 999
     end
