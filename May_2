@@ -260,16 +260,24 @@ task.spawn(function()
 
         if isRejoinEnabled then
 
-            print("Đợi rejoin:", rejoinDelay, "giây")
+            local waitTime
 
-            task.wait(rejoinDelay)
+            if game.PlaceId == 13379208636 or game.PlaceId == 14916516914 then
+                waitTime = rejoinDelay
+            else
+                waitTime = 240
+            end
+
+            print("Đợi rejoin:", waitTime, "giây")
+
+            task.wait(waitTime)
 
             if isRejoinEnabled then
 
                 print("Rejoin server hiện tại")
 
                 pcall(function()
-                    TeleportService:TeleportToPlaceInstance(placeId, jobId, player)
+                    TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, player)
                 end)
 
             end
