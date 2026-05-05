@@ -389,10 +389,10 @@ if game.PlaceId == MAIN_PLACE then
     end
 
     if isSlotA() and (prestige == 1 or prestige == 2) then
-        matchCount = 30
+        matchCount = 20
 
     elseif isSlotA() and (prestige == 3 or prestige == 4 or prestige == 5) and not isSMinus then
-        matchCount = 15
+        matchCount = 13
 
     elseif isSlotBOrC() and (
         prestige == 1 or
@@ -401,7 +401,7 @@ if game.PlaceId == MAIN_PLACE then
         (prestige == 4 and not isSMinus) or
         (prestige == 5 and not isSMinus)
         ) then
-    matchCount = 15
+    matchCount = 13
 
     else
         matchCount = 999
