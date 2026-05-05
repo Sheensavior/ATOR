@@ -346,12 +346,23 @@ if game.PlaceId == MAIN_PLACE then
     task.wait(20)
 
     local function clickOpenUI()
-        VirtualInputManager:SendMouseMoveEvent(250, 50, game)
-        task.wait(0.1)
-        VirtualInputManager:SendMouseButtonEvent(250, 50, 0, true, game, 1)
-        task.wait(0.05)
-        VirtualInputManager:SendMouseButtonEvent(250, 50, 0, false, game, 1)
-    end
+    -- click mở UI
+    VirtualInputManager:SendMouseMoveEvent(250, 50, game)
+    task.wait(0.1)
+    VirtualInputManager:SendMouseButtonEvent(250, 50, 0, true, game, 1)
+    task.wait(0.05)
+    VirtualInputManager:SendMouseButtonEvent(250, 50, 0, false, game, 1)
+
+    -- đợi UI mở
+    task.wait(1)
+
+    -- click vào chỗ grade
+    VirtualInputManager:SendMouseMoveEvent(185, 500, game)
+    task.wait(0.1)
+    VirtualInputManager:SendMouseButtonEvent(185, 500, 0, true, game, 1)
+    task.wait(0.05)
+    VirtualInputManager:SendMouseButtonEvent(185, 500, 0, false, game, 1)
+end
 
     for i = 1, 50 do
         local text = ""
