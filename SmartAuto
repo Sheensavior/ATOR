@@ -279,6 +279,7 @@ local function processLogic()
     if prestige == 1 or (prestige == 2 and level < 100) then
         modifyConfig({
             addXPBoost = true
+            boostAmount = 1
         })
     end
 
