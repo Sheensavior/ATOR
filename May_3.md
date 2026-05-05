@@ -1,0 +1,496 @@
+if game.PlaceId == 14932214603 then
+    return
+end
+-- SERVICES
+-- =========================
+local TeleportService = game:GetService("TeleportService")
+local Players = game:GetService("Players")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local HttpService = game:GetService("HttpService")
+
+local player = Players.LocalPlayer
+local placeId = game.PlaceId
+local jobId = game.JobId
+
+local function rejoinCurrentServer()
+    pcall(function()
+        TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, player)
+    end)
+end
+
+-- =========================
+-- SETTINGS
+-- =========================
+local isRejoinEnabled = true
+local rejoinDelay = 90 -- giây
+
+-- =========================
+-- PLACE CONFIG
+-- =========================
+local MAIN_PLACE = 14916516914
+local RETURN_PLACE = 13379208636
+
+-- =========================
+-- FILE PATHS
+-- =========================
+local filePath = "Violet/AOTR/settings/Auto Farm.json"
+local jsonPath = "prestige_data.json"
+local autoLoadPath = "Violet/AOTR/Menu/settings/autoload.txt"
+
+-- =========================
+-- USERNAME LIST
+-- =========================
+local usernames = {
+    "Kaynban3612",
+    "GonzalezPerry99",
+    "SanzPietro2002",
+    "RibeiroGerrit2007",
+    "SvenTang10",
+    "XxEagleRiftOmegaxX63",
+    "T0xic_Pixelated46",
+    "Cynthia_Hunter7340",
+    "ImranS0larRunner1070",
+    "Shad0w_St0rm9015",
+    "ChristineRune8230",
+    "Fennkranet221",
+    "Z4elzelk369",
+    "HendrikjePatel00",
+    "BrooklynTiwar05",
+    "JacoFaith2010",
+    "PerryHector2004",
+    "Far0uqRift4157",
+    "IonSlime1785",
+    "Joyc3_Rift7073",
+    "JaydenStellarRunner9",
+    "V3lkbrak276",
+    "EzraCraft200865"
+}
+
+-- =========================
+-- WEBHOOK LIST
+-- =========================
+local webhooks = {
+    "https://discord.com/api/webhooks/1501010834103472188/j1OuT4SLjlVEdNgai2lal3Niups6_4uk2gbwSR_GoEVmF-OsHDiuiIL_NUfWdqQpBh3d",
+    "https://discord.com/api/webhooks/1501011041033916679/DptBWc1TyHXjcq2khAy20Y7YtI0YXQPmHuIAtt7gR_RbqaIrqqjyKTweih_SVOP3q4C3",
+    "https://discord.com/api/webhooks/1501011115126030337/Zti8K48_Ff6Oon5Epyi42ZWy3PaYYJOR0KLyfSl8HMSe5b2OVJVXfHYjBSh1eGK9ev40",
+    "https://discord.com/api/webhooks/1501011179647275079/9P-PEwiw1Vee4hOF7UzXyEiiY0Qbg3GE3Ax8Wa2ZAn7QkO_YHX2hQyk_zmVds-peRgPq",
+    "https://discord.com/api/webhooks/1501011255790534687/aEE_YsIJdA9i80s_aK62qKv_CqMcZczLeB-e6fOPt5h1ThYPfxH26YXZo8thriMhxy70",
+    "https://discord.com/api/webhooks/1501011323511636088/UyS1vSRIcXBSnAAxaZntVpAon7G0wIH_5X5Gavcpi4aZcxf5mlbIccu7VB32eLKZdmYt",
+    "https://discord.com/api/webhooks/1501011462502744234/WeQ0EFSkYVdabyieQlRedJjZ591marQlzHaalgkrC6ZVLcyXVzZcU24tN987FTcMEd2D",
+    "https://discord.com/api/webhooks/1501011546522914867/W-ZcQODAGrrPV_W63Dlw9N9kYeDVdpWK3NBVns57H7UZ49oz98cntuiDo08sta_cRIII",
+    "https://discord.com/api/webhooks/1501011624226717958/OugCn6XZzZw2bL9Px_1BUG7UUbdu6zf_XUhm6NdJDLaupG52ueXut-zUcChrDESL9wuJ",
+    "https://discord.com/api/webhooks/1501011731609292974/EU9OgdSCFUVC3r3Jf_XoPU4pKkJEtAIbMmwHEczOHErzCc3Du_PosgSL9HAYkpIlrRp7",
+    "https://discord.com/api/webhooks/1501011803205795971/9UzMElXffTbHPR4Py-kThKgeTH8pDBCRX9Z-WD-MHlCcbaQfWVQ1NKF5dUAo8tQHb3VL",
+    "https://discord.com/api/webhooks/1501011868955971674/_GYh30w5uMRtGyhGjsgi6t7GNYWd-u7WdifNmQ-rvCtTb5BiYEJEQ-mItb8VoVh2mtF9",
+    "https://discord.com/api/webhooks/1501011932885422121/jITvUqCOz4ch-d5fTYtRT3bFtpJ2hjwo9a9VaNGET9HMkM5CcFESK1GXFsCdLyBVWX2M",
+    "https://discord.com/api/webhooks/1501012034882502656/tcrXb2VG_-wZcE-2WvEvnaQzNlpgowqN1C5CBcyVPG-4fWM9dqaR9afDpdmTbSNtrMIp",
+    "https://discord.com/api/webhooks/1501012110778568705/j_Sleb0Ny76OfRIqunQAVNonyQ5M9f2fYV6PlpliWm4385XXHWr1hky0Y1okQErbcVh-",
+    "https://discord.com/api/webhooks/1501012179368018043/26DuNMaTjmOetSpDbXFJer_4dg0pgPDLHvphOmJLW6FPP4vDVJ4IkpuWpfXG23EbeNWL",
+    "https://discord.com/api/webhooks/1501012258074136636/rbSHoLuG8vyXfh9TmaVG-3tnTFl0ESgXEzHrWSTt8vHSp4P4SvnCcpw39VaVE9tSjsge",
+    "https://discord.com/api/webhooks/1501012322184069180/sBkssD7HZ6K_c8Uw899jkcQCtSxCwzNAdPQuWkMr9EqzEBHF2x07o1MdwOv_jEJOmszO",
+    "https://discord.com/api/webhooks/1501012395831853228/rcBOspzWqG1JgGyPZYEyl5_EEL2W1M_qlLrWkAcf2jyfO3-ErpZgfAP5PJFjmVVj8Im4",
+    "https://discord.com/api/webhooks/1501012461044895855/Wc9CQ411EQv7ru0tj5-Yz5MyL7MVbWCqjf27qvKLcwMYlCcj9Zh5de0Cw5xTX8o5K1eb",
+    "https://discord.com/api/webhooks/1501012532200996948/A3Bg3WhaJJYcm2SMVyJWSrukujy61ZP7vJsQtq_aFv80IWsFwipoFUNDnW9jxkkKBCuQ",
+    "https://discord.com/api/webhooks/1501012608789123154/vqKvhGTJOy1QNsobch-lE9AO63P8Toz6BjJtiqzPo5fYoFwGbfGBjp7jbmDm2Jfr-PoA",
+    "https://discord.com/api/webhooks/1501012665202507786/ZmbZFGo8ZQBOhZ7I79RyCLs0ewOwXx7He53QT35ZaDqHgLOY5deLELN9EdfTkyhzBssz"
+}
+
+-- =========================
+-- FILE FUNCTIONS
+-- =========================
+local function loadJson()
+    if isfile(jsonPath) then
+        local success, data = pcall(function()
+            return HttpService:JSONDecode(readfile(jsonPath))
+        end)
+
+        if success and data then
+            return data
+        end
+    end
+
+    return {
+        prestige = 0,
+        grade = "",
+        matchCount = 0,
+        totalCount = 0
+    }
+end
+
+local function saveJson(data)
+    writefile(jsonPath, HttpService:JSONEncode(data))
+end
+
+local data = loadJson()
+
+-- =========================
+-- PRESTIGE IMAGE MAP
+-- =========================
+local prestigeMap = {
+    ["rbxassetid://15912127501"] = 1,
+    ["rbxassetid://15912227453"] = 2,
+    ["rbxassetid://15912229007"] = 3,
+    ["rbxassetid://85222435330048"] = 4,
+    ["rbxassetid://78762070666791"] = 5,
+}
+
+-- =========================
+-- AUTOLOAD SLOT
+-- =========================
+local function getSlot()
+    if isfile(autoLoadPath) then
+        local content = readfile(autoLoadPath)
+        content = tostring(content):gsub("\n", ""):gsub("\r", "")
+
+        if content == "A" then
+            return "A"
+        elseif content == "B" then
+            return "B"
+        elseif content == "C" then
+            return "C"
+        end
+    end
+
+    return "UNKNOWN"
+end
+
+-- =========================
+-- GOLD BOOST TIME
+-- =========================
+local function isGoldBoostActive()
+    local success, text = pcall(function()
+        return player.PlayerGui.Interface.HUD.Main.Top_Boosts.Gold.Time.Time.Text
+    end)
+
+    if not success then
+        return false
+    end
+
+    text = tostring(text)
+
+    if text == "" then
+        return false
+    end
+
+    if text == "00:00" or text == "0:00" then
+        return false
+    end
+
+    return true
+end
+
+-- =========================
+-- UPDATE WEBHOOK JSON
+-- =========================
+task.spawn(function()
+
+    local webhookMap = {}
+
+    for i, username in ipairs(usernames) do
+        webhookMap[username] = webhooks[i]
+    end
+
+    local selectedWebhook = webhookMap[player.Name]
+
+    if not selectedWebhook then
+        warn("Không tìm thấy webhook cho account:", player.Name)
+        return
+    end
+
+    if not isfile(filePath) then
+        warn("Không tìm thấy file:", filePath)
+        return
+    end
+
+    local success, err = pcall(function()
+
+        local raw = readfile(filePath)
+        local dataFile = HttpService:JSONDecode(raw)
+
+        for _, obj in ipairs(dataFile.objects) do
+            if obj.idx == "WebhookLinkTextBox" then
+                obj.text = selectedWebhook
+                break
+            end
+        end
+
+        writefile(filePath, HttpService:JSONEncode(dataFile))
+
+    end)
+
+    if success then
+        print("Webhook updated:", player.Name)
+    else
+        warn("Lỗi update webhook:", err)
+    end
+
+end)
+
+-- =========================
+-- GUI
+-- =========================
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "RejoinGui"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+local toggleButton = Instance.new("TextButton")
+toggleButton.Parent = screenGui
+toggleButton.Size = UDim2.new(0, 200, 0, 50)
+toggleButton.Position = UDim2.new(0, 20, 0.5, -25)
+toggleButton.TextColor3 = Color3.fromRGB(255,255,255)
+toggleButton.TextScaled = true
+toggleButton.BorderSizePixel = 0
+
+local function updateUI()
+    toggleButton.Text = "Rejoin: " .. (isRejoinEnabled and "Bật" or "Tắt")
+
+    if isRejoinEnabled then
+        toggleButton.BackgroundColor3 = Color3.fromRGB(0,255,0)
+    else
+        toggleButton.BackgroundColor3 = Color3.fromRGB(255,0,0)
+    end
+end
+
+updateUI()
+
+-- =========================
+-- REJOIN LOOP
+-- =========================
+task.spawn(function()
+
+    while true do
+
+        if isRejoinEnabled then
+
+            local waitTime
+
+            if game.PlaceId == 13379208636 or game.PlaceId == 14916516914 then
+                waitTime = rejoinDelay
+            else
+                waitTime = 240
+            end
+
+            print("Đợi rejoin:", waitTime, "giây")
+
+            task.wait(waitTime)
+
+            if isRejoinEnabled then
+
+                print("Rejoin server hiện tại")
+
+                pcall(function()
+                    TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, player)
+                end)
+
+            end
+
+        else
+            task.wait(1)
+        end
+
+    end
+
+end)
+
+-- =========================
+-- BUTTON TOGGLE
+-- =========================
+toggleButton.MouseButton1Click:Connect(function()
+    isRejoinEnabled = not isRejoinEnabled
+    updateUI()
+end)
+
+-- =========================
+-- MAIN PLACE LOGIC
+-- =========================
+if game.PlaceId == MAIN_PLACE then
+
+    local rankFrame = player.PlayerGui
+        :WaitForChild("Interface")
+        :WaitForChild("Gear_Up")
+        :WaitForChild("Playerlist")
+        :WaitForChild("Local")
+        :WaitForChild("Side")
+        :WaitForChild("Prestige")
+        :WaitForChild("Rank")
+
+    task.wait(2)
+
+    local prestige = 0
+
+    local pos = rankFrame.AbsolutePosition
+
+    local roundedX = math.floor(pos.X * 100 + 0.5) / 100
+    local roundedY = math.floor(pos.Y * 100 + 0.5) / 100
+
+    local function closeEnough(a, b)
+        return math.abs(a - b) <= 2
+    end
+
+    if closeEnough(roundedX, 1584.32) and closeEnough(roundedY, -40.54) then
+        prestige = 0
+    else
+        local imageId = ""
+
+        pcall(function()
+            imageId = rankFrame.Image
+        end)
+
+        prestige = prestigeMap[imageId] or 0
+    end
+
+    local grade = ""
+
+    local titlePath = player.PlayerGui.Interface.Equipment.Categories.Upgrades.Main.Title
+    task.wait(20)
+
+    local function clickOpenUI()
+        VirtualInputManager:SendMouseMoveEvent(250, 50, game)
+        task.wait(0.1)
+        VirtualInputManager:SendMouseButtonEvent(250, 50, 0, true, game, 1)
+        task.wait(0.05)
+        VirtualInputManager:SendMouseButtonEvent(250, 50, 0, false, game, 1)
+    end
+
+    for i = 1, 50 do
+        local text = ""
+
+        pcall(function()
+            text = titlePath.Text
+        end)
+
+        if string.find(text, "GRADE") then
+            local extracted = string.match(text, "%[(.-)%sGRADE%]")
+
+            if extracted then
+                grade = extracted
+                break
+            end
+        end
+
+        clickOpenUI()
+        task.wait(0.5)
+    end
+
+    local matchCount = 999
+
+    local slot = getSlot()
+    local prestige = tonumber(prestige) or 0
+
+    local isSMinus = (grade == "S-")
+    
+    local function isSlotA()
+        return slot == "A"
+    end
+
+    local function isSlotBOrC()
+        return slot == "B" or slot == "C"
+    end
+
+    if isSlotA() and (prestige == 1 or prestige == 2) then
+        matchCount = 30
+
+    elseif isSlotA() and (prestige == 3 or prestige == 4 or prestige == 5) and not isSMinus then
+        matchCount = 15
+
+    elseif isSlotBOrC() and (
+        prestige == 1 or
+        prestige == 2 or
+        (prestige == 3 and not isSMinus) or
+        (prestige == 4 and not isSMinus) or
+        (prestige == 5 and not isSMinus)
+        ) then
+    matchCount = 15
+
+    else
+        matchCount = 999
+    end
+
+    data.prestige = prestige
+    data.grade = grade
+    data.matchCount = matchCount
+    data.totalCount = (data.totalCount or 0)
+
+    saveJson(data)
+
+    print("Prestige:", prestige)
+    print("Grade:", grade)
+    print("Match Count:", matchCount)
+end
+
+-- =========================
+-- MATCH COMPLETE LOGIC
+-- =========================
+if game.PlaceId ~= MAIN_PLACE and game.PlaceId ~= RETURN_PLACE then
+
+    data.matchCount = (data.matchCount or 0) - 1
+
+    if data.matchCount < 0 then
+        data.matchCount = 0
+    end
+
+    data.totalCount = (data.totalCount or 0) + 1
+
+    saveJson(data)
+
+    print("Remaining Matches:", data.matchCount)
+
+    if data.matchCount <= 0 then
+        rejoinCurrentServer()
+    end
+end
+
+-- =========================
+-- GOLD BOOST CHECK
+-- =========================
+local function shouldCheckGoldBoost(slot, prestige)
+
+    if slot == "A" and prestige == 0 then
+        return false
+    end
+
+    if slot == "A" and prestige == 1 then
+        return false
+    end
+
+    if prestige == 5 then
+        return false
+    end
+
+    return true
+end
+
+if game.PlaceId ~= MAIN_PLACE and game.PlaceId ~= RETURN_PLACE then
+
+    task.spawn(function()
+
+        while task.wait(5) do
+
+            local currentData = loadJson()
+
+            local slot = getSlot()
+            local prestige = tonumber(currentData.prestige) or 0
+
+            print("===== GOLD CHECK =====")
+            print("Slot:", slot)
+            print("Prestige:", prestige)
+            print("CanCheck:", shouldCheckGoldBoost(slot, prestige))
+            print("GoldActive:", isGoldBoostActive())
+
+            if shouldCheckGoldBoost(slot, prestige) then
+
+                if not isGoldBoostActive() then
+
+                    print("Teleport vì Gold Boost hết")
+
+                    pcall(function()
+                        rejoinCurrentServer()
+                    end)
+
+                    break
+                end
+            end
+        end
+    end)
+end
