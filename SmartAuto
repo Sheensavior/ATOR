@@ -212,6 +212,9 @@ local function modifyConfig(options)
         if obj.idx == "KickPlayersToggle" and options.kick ~= nil then
             obj.value = options.kick
         end
+        if obj.idx == "BuyBoostsSlider" and options.boostAmount then
+            obj.value = tostring(options.boostAmount)
+        end
 
         if obj.idx == "AutoJoinMissionsToggle" and options.autoConnect ~= nil then
             obj.value = options.autoConnect
@@ -286,7 +289,8 @@ local function processLogic()
     end
     if prestige == 3 then
         modifyConfig({
-            removeXPBoost = true
+            removeXPBoost = true,
+            boostAmount = 2
         })
     end
 
