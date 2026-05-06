@@ -1,4 +1,4 @@
-task.wait(10)
+task.wait(20)
 -- =========================
 -- CHỈ CHẠY Ở PLACE ID NÀY
 -- =========================
@@ -355,7 +355,7 @@ local function processLogic()
     if slot == "A" or slot == "B" then
 
         if prestige == 4 and gold > 1000000000 then
-            task.wait(60)
+            task.wait(50)
 
             modifyConfig({
                 kick = false,
@@ -371,7 +371,7 @@ local function processLogic()
         end
 
         if prestige == 5 and gems > 50000 then
-            task.wait(60)
+            task.wait(50)
 
             modifyConfig({
                 kick = false,
@@ -388,7 +388,7 @@ local function processLogic()
         end
 
         if prestige == 5 and gems <= 49999 and gems >= 23000 then
-            task.wait(60)
+            task.wait(50)
 
             modifyConfig({
                 kick = false,
@@ -405,7 +405,7 @@ local function processLogic()
         end
 
         if prestige == 5 and gems <= 22999 and gems >= 10000 then
-            task.wait(60)
+            task.wait(50)
 
             modifyConfig({
                 kick = true,
@@ -432,7 +432,7 @@ local function processLogic()
     if slot == "C" then
 
         if prestige == 4 and gold > 1000000000 then
-            task.wait(60)
+            task.wait(50)
 
             modifyConfig({
                 autoBoost = false,
