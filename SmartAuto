@@ -1,4 +1,4 @@
-task.wait(30)
+
 -- =========================
 -- CHỈ CHẠY Ở PLACE ID NÀY
 -- =========================
@@ -8,7 +8,7 @@ if game.PlaceId ~= TARGET_PLACE_ID then
     warn("Sai PlaceId - Script không chạy")
     return
 end
-
+task.wait(30)
 -- =========================
 -- UI THÔNG BÁO SCRIPT ĐANG CHẠY
 -- =========================
