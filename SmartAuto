@@ -250,6 +250,7 @@ local function modifyConfig(options)
             if options.forceGoldBoost then
                 obj.value["2x Gold Boost [2h]"] = true
             end
+        end
                     -- =========================
         -- SERUM SYSTEM
         -- =========================
@@ -304,7 +305,6 @@ local function modifyConfig(options)
                 ["Mythic"] = false
             }
         end
-        end
     end
 
     saveConfig(data)
@@ -332,7 +332,7 @@ local function processLogic()
     -- =========================
     if prestige == 1 or (prestige == 2 and level < 100) then
         modifyConfig({
-            addXPBoost = true
+            addXPBoost = true,
             boostAmount = 1
         })
     end
