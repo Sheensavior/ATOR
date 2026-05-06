@@ -250,6 +250,60 @@ local function modifyConfig(options)
             if options.forceGoldBoost then
                 obj.value["2x Gold Boost [2h]"] = true
             end
+                    -- =========================
+        -- SERUM SYSTEM
+        -- =========================
+        if obj.idx == "SellSerums" then
+            obj.value = true
+        end
+
+        if obj.idx == "SerumDropdown" then
+            obj.value = {
+                ["Armored Serum"] = true,
+                ["Female Serum"] = true,
+                ["Attack Serum"] = true
+            }
+        end
+
+        if obj.idx == "SerumSellAmount" then
+            obj.value = "1"
+        end
+
+        -- =========================
+        -- AUTO EQUIP PERKS
+        -- =========================
+        if obj.idx == "NewEquipPerksToggle" then
+            obj.value = true
+        end
+
+        if obj.idx == "FirstPrioEquip" then
+            obj.value = {
+                ["Kengo [Offense]"] = true,
+                ["Tatsujin [Support]"] = true,
+                ["Heavenly Restriction [Body]"] = true
+            }
+        end
+
+        if obj.idx == "SecondPrioEquip" then
+            obj.value = {
+                ["Gear Master [Support]"] = true,
+                ["Perfect Soul [Body]"] = true,
+                ["Unparalleled Strength [Offense]"] = true
+            }
+        end
+
+        -- =========================
+        -- SELL PERKS FILTER
+        -- =========================
+        if obj.idx == "sellPerksDropdown" then
+            obj.value = {
+                ["Common"] = true,
+                ["Rare"] = true,
+                ["Epic"] = true,
+                ["Legendary"] = false,
+                ["Mythic"] = false
+            }
+        end
         end
     end
 
