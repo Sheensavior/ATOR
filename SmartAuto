@@ -297,13 +297,12 @@ local function modifyConfig(options)
         -- SELL PERKS FILTER
         -- =========================
         if obj.idx == "sellPerksDropdown" then
-            obj.value = {
-                ["Common"] = true,
-                ["Rare"] = true,
-                ["Epic"] = true,
-                ["Legendary"] = false,
-                ["Mythic"] = false
-            }
+            obj.value = obj.value or {}
+            obj.value["Common"] = true
+            obj.value["Rare"] = true
+            obj.value["Epic"] = true
+            obj.value["Legendary"] = nil
+            obj.value["Mythic"] = nil
         end
     end
 
