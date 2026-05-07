@@ -251,6 +251,13 @@ local function modifyConfig(options)
                 obj.value["2x Gold Boost [2h]"] = true
             end
         end
+        if obj.idx == "MissionModifiers" then
+                obj.value = obj.value or {}
+
+            if options.noMemories ~= nil then
+                obj.value["No Memories"] = options.noMemories
+            end
+        end
                     -- =========================
         -- SERUM SYSTEM
         -- =========================
