@@ -252,11 +252,9 @@ local function modifyConfig(options)
             end
         end
         if obj.idx == "MissionModifiers" then
-                obj.value = obj.value or {}
+            obj.value = obj.value or {}
 
-            if options.noMemories ~= nil then
-                obj.value["No Memories"] = options.noMemories
-            end
+            obj.value["No Memories"] = true
         end
                     -- =========================
         -- SERUM SYSTEM
@@ -451,6 +449,11 @@ local function processLogic()
         end
     end
 end
+
+-- =========================
+-- FORCE SAVE CONFIG
+-- =========================
+modifyConfig({})
 
 -- =========================
 -- START
