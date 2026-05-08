@@ -235,6 +235,9 @@ local function modifyConfig(options)
         if obj.idx == "SpinsDrop" and options.spinAmount then
             obj.value = options.spinAmount
         end
+        if obj.idx == "CurrencyDropdown" then
+            obj.value = "Canes"
+        end
 
         if obj.idx == "boostsDropdown" then
             obj.value = obj.value or {}
