@@ -1,0 +1,10 @@
+---- cái này để thay slot ----
+if game.PlaceId == 13379208636 then
+    pcall(function()
+
+        writefile(autoLoadPath, "A")
+
+        print("Đã đổi autoload thành: Auto Spin A")
+
+    end)
+end
