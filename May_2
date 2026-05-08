@@ -22,7 +22,7 @@ end
 -- SETTINGS
 -- =========================
 local isRejoinEnabled = true
-local rejoinDelay = 7200 -- giây
+local rejoinDelay = 90 -- giây
 
 -- =========================
 -- PLACE CONFIG
@@ -42,7 +42,7 @@ local autoLoadPath = "Violet/AOTR/Menu/settings/autoload.txt"
 if game.PlaceId == 13379208636 then
     pcall(function()
 
-        writefile(autoLoadPath, "Auto Spin A")
+        writefile(autoLoadPath, "A")
 
         print("Đã đổi autoload thành: Auto Spin A")
 
