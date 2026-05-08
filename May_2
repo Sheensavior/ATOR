@@ -39,43 +39,35 @@ local autoLoadPath = "Violet/AOTR/Menu/settings/autoload.txt"
 
 -- SPECIAL AUTO SPIN
 -- =========================
-if game.PlaceId == 13379208636 then
-    pcall(function()
 
-        writefile(autoLoadPath, "A")
-
-        print("Đã đổi autoload thành: Auto Spin A")
-
-    end)
-end
 
 -- =========================
 -- USERNAME LIST
 -- =========================
 local usernames = {
-    "Everly_Sparkly1860",
-    "Harp3rRock3t5717",
-    "SabirThunder4256",
-    "Drift_Rift9878",
-    "Mirage_Ninja4473",
-    "SusanEchoX5780",
-    "PaisleyCookieStorm19",
-    "LegendFr0stV0id20014",
-    "PixelTurb02160",
-    "Block_Turbo6752",
-    "Micha3lOblivion8184",
-    "Sana_Aqua6186",
-    "MarkByte4812",
-    "X1logr1mr253",
-    "Syndg4lek4i925",
-    "L3g3ndZap7257",
-    "Timothy_Cookie4162",
-    "XxHazelAlphaDawnxXYT",
-    "Jamila_PhantomRunn3r",
-    "CitraSanti02",
-    "UchidaLieselotte1995",
-    "R4enjinn366",
-    "J3x1brak2008684"
+    "Saber_Mystic2287",
+    "WraithMysticRunner25",
+    "Puls3Max6463",
+    "Jude_Thunder2701",
+    "WardenBacon1584",
+    "VictorByun2007",
+    "VoronovTakumi1999",
+    "PetterssonAndre2000",
+    "TranShan02",
+    "DabrBeatrice1998",
+    "WatsDelphine2000",
+    "IgorMazza01",
+    "XuKeming2007",
+    "LorenzoMaya08",
+    "AmandaWu09",
+    "HorvSadhbh2010",
+    "HiddeDeng2003",
+    "ThorvaldThach07",
+    "TomoeRossi2004",
+    "ClementineVitale09",
+    "HoangGimenez2003",
+    "BiancaMills08",
+    "MartWinifred2002"
 }
 
 -- =========================
