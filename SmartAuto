@@ -348,7 +348,14 @@ local function processLogic()
             removeXPBoost = true
         })
     end
-    if prestige == 3 then
+    if prestige == 3 and level < 175 then
+        modifyConfig({
+            removeXPBoost = true,
+            boostAmount = 2
+        })
+    end
+
+    if prestige == 3 and level >= 175 then
         modifyConfig({
             removeXPBoost = true,
             boostAmount = 3
@@ -462,4 +469,71 @@ modifyConfig({})
 -- START
 -- =========================
 processLogic()
+
+-- =========================
+-- GOLD BOOST CHECK
+-- =========================
+local function isGoldBoostActive()
+
+    local success, text = pcall(function()
+        return player.PlayerGui
+            :WaitForChild("Interface")
+            :WaitForChild("HUD")
+            :WaitForChild("Main")
+            :WaitForChild("Top_Boosts")
+            :WaitForChild("Gold")
+            :WaitForChild("Time")
+            :WaitForChild("Time")
+            .Text
+    end)
+
+    if not success then
+        return false
+    end
+
+    text = tostring(text)
+
+    if text == "" then
+        return false
+    end
+
+    if text == "00:00" or text == "0:00" then
+        return false
+    end
+
+    return true
+end
+
+task.spawn(function()
+
+    while true do
+        task.wait(5)
+
+        local prestige = getPrestige()
+        local slot = getSlot()
+
+        local skipCheck =
+            (slot == "A" and prestige == 1)
+            or
+            (slot == "A" and prestige == 2)
+
+        if not skipCheck then
+
+            if not isGoldBoostActive() then
+
+                print("Gold Boost hết -> rejoin sau 55s")
+
+                task.wait(55)
+
+                TeleportService:TeleportToPlaceInstance(
+                    game.PlaceId,
+                    game.JobId,
+                    player
+                )
+
+                break
+            end
+        end
+    end
+end)
 
