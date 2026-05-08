@@ -1,4 +1,9 @@
----- cái này để thay slot ----
+---- cái này để thay slot để dưới 
+local filePath = "Violet/AOTR/settings/Auto Farm.json"
+local jsonPath = "prestige_data.json"
+local autoLoadPath = "Violet/AOTR/Menu/settings/autoload.txt"
+thay vào May_1,....
+----
 if game.PlaceId == 13379208636 then
     pcall(function()
 
