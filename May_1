@@ -381,7 +381,7 @@ end
         end
 
         clickOpenUI()
-        task.wait3)
+        task.wait(3)
     end
 
     local matchCount = 999
