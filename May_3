@@ -399,13 +399,14 @@ end
         return slot == "B" or slot == "C"
     end
 
-    if isSlotA() and (prestige == 1 or prestige == 2) then
+    if isSlotA() and (prestige == 1 or prestige == 0) then
         matchCount = 20
 
-    elseif isSlotA() and (prestige == 3 or prestige == 4 or prestige == 5) and not isSMinus then
+    elseif isSlotA() and (prestige == 2 or prestige == 3 or prestige == 4 or prestige == 5) and not isSMinus then
         matchCount = 13
 
     elseif isSlotBOrC() and (
+        prestige == o or
         prestige == 1 or
         prestige == 2 or
         (prestige == 3 and not isSMinus) or
