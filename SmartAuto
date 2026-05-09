@@ -238,6 +238,11 @@ local function modifyConfig(options)
         if obj.idx == "CurrencyDropdown" then
             obj.value = "Canes"
         end
+        -- PRES4 GOLD
+        -- =========================
+        if obj.idx == "Pres4Gold" then
+            obj.value = "600000000"
+        end
 
         if obj.idx == "boostsDropdown" then
             obj.value = obj.value or {}
@@ -275,7 +280,7 @@ local function modifyConfig(options)
         end
 
         if obj.idx == "SerumSellAmount" then
-            obj.value = "1"
+            obj.value = "10"
         end
 
         -- =========================
