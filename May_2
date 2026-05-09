@@ -358,7 +358,7 @@ if game.PlaceId == MAIN_PLACE then
     VirtualInputManager:SendMouseButtonEvent(250, 50, 0, false, game, 1)
 
     -- đợi UI mở
-    task.wait(1)
+    task.wait(3)
 
     -- click vào chỗ grade
     VirtualInputManager:SendMouseMoveEvent(185, 500, game)
@@ -385,7 +385,7 @@ end
         end
 
         clickOpenUI()
-        task.wait(0.5)
+        task.wait(3)
     end
 
     local matchCount = 999
