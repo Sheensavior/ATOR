@@ -521,17 +521,25 @@ task.spawn(function()
 
             if not isGoldBoostActive() then
 
-                print("Gold Boost hết -> rejoin sau 55s")
+                print("Gold Boost hết -> chờ 55s để xác nhận")
 
-                task.wait(55)
+                task.wait(40)
 
-                TeleportService:TeleportToPlaceInstance(
-                    game.PlaceId,
-                    game.JobId,
-                    player
-                )
+                -- check lại lần nữa
+                if not isGoldBoostActive() then
 
-                break
+                    print("Gold Boost vẫn hết -> rejoin")
+
+                    TeleportService:TeleportToPlaceInstance(
+                        game.PlaceId,
+                        game.JobId,
+                        player
+                    )
+
+                    break
+                else
+                    print("Gold Boost đã quay lại")
+                end
             end
         end
     end
