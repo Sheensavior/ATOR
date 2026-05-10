@@ -356,14 +356,14 @@ local function processLogic()
     if prestige == 3 and level < 175 then
         modifyConfig({
             removeXPBoost = true,
-            boostAmount = 2
+            boostAmount = 1
         })
     end
 
     if prestige == 3 and level >= 175 then
         modifyConfig({
             removeXPBoost = true,
-            boostAmount = 3
+            boostAmount = 2
         })
     end
 
