@@ -360,6 +360,12 @@ local function processLogic()
             boostAmount = 3
         })
     end
+    if prestige == 4 then
+        modifyConfig({
+            removeXPBoost = true,
+            boostAmount = 3
+        })
+    end
 
     -- =========================
     -- SLOT A / B
