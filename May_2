@@ -45,29 +45,29 @@ local autoLoadPath = "Violet/AOTR/Menu/settings/autoload.txt"
 -- USERNAME LIST
 -- =========================
 local usernames = {
-    "MarinoPiotr10",
-    "LyudmilaXaiyavong08",
-    "AlexanderFlore98",
-    "LamKeller05",
+    "SheenGiuDo5",
     "PhanHeitor2002",
+    "SheenGiuDo2",
+    "GomeRonnie2007",
+    "SheenGiuDo4",
+    "FilippBaile02",
+    "AllaySheen",
+    "MarinoPiotr10",
+    "SheenGiuDo8",
+    "SheenGiuDo7",
+    "GuentherThongsavanh0",
     "YamaguchiGiovana2002",
-    "BarrettAlexiou06",
+    "TiffanyJensen07",
+    "AlexanderFlore98",
+    "PaulMendo04",
+    "CaballeroHamza96",
+    "DidierBurns02",
+    "MartinClemence05",
     "ZielCarlo2007",
     "DamianBlanc1997",
-    "GomeRonnie2007",
-    "DidierBurns02",
-    "CaballeroHamza96",
-    "GuentherThongsavanh0",
-    "TiffanyJensen07",
-    "PaulMendo04",
-    "MartinClemence05",
-    "FilippBaile02",
-    "SheenGiuDo7",
-    "SheenGiuDo2",
-    "SheenGiuDo8",
-    "SheenGiuDo4",
-    "SheenGiuDo5",
-    "AllaySheen"
+    "LyudmilaXaiyavong08",
+    "Dragon5UOblivionc156",
+    "XzThornq3EchoXjzX43"
 }
 
 -- =========================
