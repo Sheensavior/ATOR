@@ -415,8 +415,7 @@ end
         prestige == 1 or
         prestige == 2 or
         (prestige == 3 and not isSMinus) or
-        (prestige == 4 and not isSMinus) or
-        (prestige == 5 and not isSMinus)
+        (prestige == 4 and not isSMinus)
         ) then
     matchCount = 13
 
