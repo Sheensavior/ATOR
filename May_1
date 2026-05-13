@@ -405,10 +405,6 @@ end
         matchCount = 20
     elseif isSlotA() and (prestige == 2 or prestige == 3 or prestige == 4) and not isSMinus then
         matchCount = 13
-    elseif isSlotA() and prestige == 5 then
-        matchCount = 0
-    elseif isSlotB() and prestige == 5 then
-        matchCount = 0
     elseif isSlotBOrC() and (
         prestige == 0 or
         prestige == 1 or
