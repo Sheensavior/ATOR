@@ -406,7 +406,7 @@ end
     elseif isSlotA() and (prestige == 2 or prestige == 3 or prestige == 4) and not isSMinus then
         matchCount = 13
     elseif isSlotBOrC() and (
-        prestige == o or
+        prestige == 0 or
         prestige == 1 or
         prestige == 2 or
         (prestige == 3 and not isSMinus) or
@@ -457,11 +457,11 @@ end
 -- =========================
 local function shouldCheckGoldBoost(slot, prestige)
 
-    if and prestige == 0 then
+    if prestige == 0 then
         return false
     end
 
-    if and prestige == 1 then
+    if prestige == 1 then
         return false
     end
 
