@@ -241,7 +241,7 @@ local function modifyConfig(options)
         -- PRES4 GOLD
         -- =========================
         if obj.idx == "Pres4Gold" then
-            obj.value = "600000000"
+            obj.value = "500000000"
         end
 
         if obj.idx == "boostsDropdown" then
@@ -495,7 +495,7 @@ end
 task.spawn(function()
 
     while true do
-        task.wait(5)
+        task.wait(2)
 
         local prestige = getPrestige()
         local slot = getSlot()
