@@ -426,7 +426,7 @@ local function processLogic()
             end
 
             task.wait(19)
-            TeleportService:Teleport(13379208636)
+            game:GetService("Players").LocalPlayer:Kick("Disconnected")
         end
     end
 
