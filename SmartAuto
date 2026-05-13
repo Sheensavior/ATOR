@@ -425,7 +425,7 @@ local function processLogic()
                 setSlot("C")
             end
 
-            task.wait(40)
+            task.wait(30)
             TeleportService:Teleport(13379208636)
         end
     end
