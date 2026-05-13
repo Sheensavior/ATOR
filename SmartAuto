@@ -431,7 +431,7 @@ local function processLogic()
             elseif slot == "B" then
                 setSlot("C")
             end
-            task.wait(25)
+            task.wait(35)
             local VirtualInputManager = game:GetService("VirtualInputManager")
             local function click(x, y)
                 VirtualInputManager:SendMouseMoveEvent(x, y, game)
