@@ -343,6 +343,8 @@ local function processLogic()
     -- =========================
     if prestige == 1 or (prestige == 2 and level < 100) then
         modifyConfig({
+            kick = true,
+            autoConnect = true,
             addXPBoost = true,
             boostAmount = 1
         })
@@ -350,18 +352,24 @@ local function processLogic()
 
     if prestige == 2 and level >= 100 then
         modifyConfig({
+            kick = true,
+            autoConnect = true,
             removeXPBoost = true,
             boostAmount = 2
         })
     end
     if prestige == 3 then
         modifyConfig({
+            kick = true,
+            autoConnect = true,
             removeXPBoost = true,
             boostAmount = 3
         })
     end
     if prestige == 4 then
         modifyConfig({
+            kick = true,
+            autoConnect = true,
             removeXPBoost = true,
             boostAmount = 3
         })
@@ -412,8 +420,8 @@ local function processLogic()
 
         if prestige == 5 and gems <= 22999 then
             modifyConfig({
-                kick = true,
-                autoConnect = true,
+                kick = false,
+                autoConnect = false,
                 keepSpin = false,
                 autoSpin = false,
                 spinAmount = "500 Spins"
