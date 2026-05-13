@@ -457,11 +457,11 @@ end
 -- =========================
 local function shouldCheckGoldBoost(slot, prestige)
 
-    if slot == "A" and prestige == 0 then
+    if prestige == 0 then
         return false
     end
 
-    if slot == "A" and prestige == 1 then
+    if prestige == 1 then
         return false
     end
 
