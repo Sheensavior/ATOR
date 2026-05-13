@@ -240,10 +240,16 @@ toggleButton.Size = UDim2.new(0, 200, 0, 50)
 toggleButton.Position = UDim2.new(0, 20, 0.5, -25)
 toggleButton.TextColor3 = Color3.fromRGB(255,255,255)
 toggleButton.TextScaled = true
+toggleButton.TextWrapped = true
 toggleButton.BorderSizePixel = 0
 
 local function updateUI()
-    toggleButton.Text = "Rejoin: " .. (isRejoinEnabled and "Bật" or "Tắt")
+
+    local slot = getSlot()
+
+    toggleButton.Text =
+        "Rejoin: " .. (isRejoinEnabled and "Bật" or "Tắt")
+        .. "\nSlot: " .. tostring(slot)
 
     if isRejoinEnabled then
         toggleButton.BackgroundColor3 = Color3.fromRGB(0,255,0)
