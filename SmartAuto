@@ -418,15 +418,45 @@ local function processLogic()
                 autoSpin = false,
                 spinAmount = "500 Spins"
             })
-
             if slot == "A" then
                 setSlot("B")
             elseif slot == "B" then
                 setSlot("C")
             end
-
             task.wait(19)
-            game:GetService("Players").LocalPlayer:Kick("Disconnected")
+            local VirtualInputManager = game:GetService("VirtualInputManager")
+            local function click(x, y)
+                VirtualInputManager:SendMouseMoveEvent(x, y, game)
+                task.wait(0.1)
+                VirtualInputManager:SendMouseButtonEvent(
+                    x,
+                   y,
+                    0,
+                    true,
+                    game,
+                    1
+                )
+                task.wait(0.05)
+                VirtualInputManager:SendMouseButtonEvent(
+                    x,
+                    y,
+                    0,
+                    false,
+                    game,
+                    1
+                )
+            end
+
+            click(590, 35)
+            task.wait(1)
+
+            click(50, 60)
+            task.wait(1)
+
+            click(30, 100)
+            task.wait(1)
+
+            click(630, 400)
         end
     end
 
