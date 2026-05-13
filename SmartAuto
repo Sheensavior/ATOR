@@ -8,7 +8,7 @@ if game.PlaceId ~= TARGET_PLACE_ID then
     warn("Sai PlaceId - Script không chạy")
     return
 end
-task.wait(1)
+task.wait(10)
 -- =========================
 -- UI THÔNG BÁO SCRIPT ĐANG CHẠY
 -- =========================
@@ -423,7 +423,7 @@ local function processLogic()
             elseif slot == "B" then
                 setSlot("C")
             end
-            task.wait(19)
+            task.wait(15)
             local VirtualInputManager = game:GetService("VirtualInputManager")
             local function click(x, y)
                 VirtualInputManager:SendMouseMoveEvent(x, y, game)
