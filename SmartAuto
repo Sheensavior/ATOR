@@ -393,7 +393,7 @@ local function processLogic()
                 addXPBoost = true,
                 keepSpin = true,
                 autoSpin = true,
-                spinAmount = "250 Spins",
+                spinAmount = "500 Spins",
                 forceGoldBoost = true
             })
         end
@@ -405,7 +405,7 @@ local function processLogic()
                 addXPBoost = true,
                 keepSpin = true,
                 autoSpin = true,
-                spinAmount = "100 Spins",
+                spinAmount = "250 Spins",
                 forceGoldBoost = true
             })
         end
