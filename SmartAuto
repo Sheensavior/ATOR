@@ -610,7 +610,7 @@ task.spawn(function()
 
                 print("Gold Boost hết -> chờ 55s để xác nhận")
 
-                task.wait(25)
+                task.wait(35)
 
                 -- check lại lần nữa
                 if not isGoldBoostActive() then
