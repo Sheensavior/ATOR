@@ -326,6 +326,45 @@ local function modifyConfig(options)
     print("Đã sửa config")
 end
 
+---------------------------------------
+local function isUnder12Hours()
+
+    local success, text = pcall(function()
+        return player.PlayerGui
+            :WaitForChild("Interface")
+            :WaitForChild("HUD")
+            :WaitForChild("Main")
+            :WaitForChild("Top_Boosts")
+            :WaitForChild("Gold")
+            :WaitForChild("Time")
+            :WaitForChild("Time")
+            .Text
+    end)
+
+    if not success then
+        return false
+    end
+
+    text = tostring(text)
+
+    local h, m, s = text:match("(%d+):(%d+):(%d+)")
+
+    h = tonumber(h)
+    m = tonumber(m)
+    s = tonumber(s)
+
+    if not h or not m or not s then
+        return false
+    end
+
+    local totalSeconds =
+        (h * 3600) +
+        (m * 60) +
+        s
+
+    return totalSeconds < (12 * 3600)
+end
+
 -- =========================
 -- MAIN LOGIC
 -- =========================
@@ -379,23 +418,36 @@ local function processLogic()
             autoConnect = true,
             removeXPBoost = true,
             onlyBuyWhenEmpty = true,
-            boostAmount = 3
+            boostAmount = 5
         })
     end
-    if prestige == 4 and gold > 950000000 and gold < 1000000000 then
-        modifyConfig({
-            kick = true,
-            autoConnect = true,
-            onlyBuyWhenEmpty = false,
-            addXPBoost = true,
-            boostAmount = 12
-        })
-    end
+    
 
     -- =========================
     -- SLOT A / B
     -- =========================
     if slot == "A" or slot == "B" then
+        if prestige == 4 and gold > 950000000 and gold < 1000000000 then
+
+            if isUnder12Hours() then
+                modifyConfig({
+                    kick = true,
+                    autoConnect = true,
+                    onlyBuyWhenEmpty = false,
+                    addXPBoost = true,
+                    boostAmount = 12
+                })
+            else
+                modifyConfig({
+                    kick = true,
+                    autoConnect = true,
+                    onlyBuyWhenEmpty = true,
+                    removeXPBoost = true,
+                    boostAmount = 5
+                })
+
+            end
+        end
 
         if prestige == 4 and gold > 1000000000 then
 
