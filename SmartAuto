@@ -565,14 +565,13 @@ local function isGoldBoostActive()
 
     local success, text = pcall(function()
         return player.PlayerGui
-            :WaitForChild("Interface")
-            :WaitForChild("HUD")
-            :WaitForChild("Main")
-            :WaitForChild("Top_Boosts")
-            :WaitForChild("Gold")
-            :WaitForChild("Time")
-            :WaitForChild("Time")
-            .Text
+        :WaitForChild("Interface")
+        :WaitForChild("Gear_Up")
+        :WaitForChild("Boosts")
+        :WaitForChild("Gold")
+        :WaitForChild("Time")
+        :WaitForChild("Time")
+        .Text
     end)
 
     if not success then
@@ -595,7 +594,7 @@ end
 task.spawn(function()
 
     while true do
-        task.wait(2)
+        task.wait(1)
 
         local prestige = getPrestige()
         local slot = getSlot()
@@ -611,7 +610,7 @@ task.spawn(function()
 
                 print("Gold Boost hết -> chờ 55s để xác nhận")
 
-                task.wait(20)
+                task.wait(25)
 
                 -- check lại lần nữa
                 if not isGoldBoostActive() then
