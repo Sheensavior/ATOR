@@ -427,7 +427,7 @@ local function processLogic()
     -- SLOT A / B
     -- =========================
     if slot == "A" or slot == "B" then
-        if prestige == 4 and gold > 950000000 and gold < 1000000000 then
+        if (prestige == 4 and gold > 950000000 and gold < 1000000000) or prestige == 5 then
 
             if isUnder12Hours() then
                 modifyConfig({
