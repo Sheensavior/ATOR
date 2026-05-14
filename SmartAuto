@@ -388,6 +388,7 @@ local function processLogic()
             autoConnect = true,
             removeXPBoost = true,
             onlyBuyWhenEmpty = false,
+            addXPBoost = true,
             boostAmount = 12
         })
     end
