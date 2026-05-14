@@ -330,15 +330,14 @@ end
 local function isUnder12Hours()
 
     local success, text = pcall(function()
-        return player.PlayerGui
-            :WaitForChild("Interface")
-            :WaitForChild("HUD")
-            :WaitForChild("Main")
-            :WaitForChild("Top_Boosts")
-            :WaitForChild("Gold")
-            :WaitForChild("Time")
-            :WaitForChild("Time")
-            .Text
+    return player.PlayerGui
+        :WaitForChild("Interface")
+        :WaitForChild("Gear_Up")
+        :WaitForChild("Boosts")
+        :WaitForChild("Gold")
+        :WaitForChild("Time")
+        :WaitForChild("Time")
+        .Text
     end)
 
     if not success then
@@ -428,24 +427,18 @@ local function processLogic()
     -- =========================
     if slot == "A" or slot == "B" then
         if (prestige == 4 and gold > 950000000 and gold < 1000000000) or prestige == 5 then
-
             if isUnder12Hours() then
                 modifyConfig({
-                    kick = true,
-                    autoConnect = true,
                     onlyBuyWhenEmpty = false,
                     addXPBoost = true,
                     boostAmount = 12
                 })
             else
                 modifyConfig({
-                    kick = true,
-                    autoConnect = true,
                     onlyBuyWhenEmpty = true,
                     removeXPBoost = true,
                     boostAmount = 5
                 })
-
             end
         end
 
