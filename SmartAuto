@@ -215,6 +215,10 @@ local function modifyConfig(options)
         if obj.idx == "BuyBoostsSlider" and options.boostAmount then
             obj.value = tostring(options.boostAmount)
         end
+        if obj.idx == "BuyBoostsToggleBlacklist"
+            and options.onlyBuyWhenEmpty ~= nil then
+            obj.value = options.onlyBuyWhenEmpty
+        end
 
         if obj.idx == "AutoJoinMissionsToggle" and options.autoConnect ~= nil then
             obj.value = options.autoConnect
@@ -346,6 +350,7 @@ local function processLogic()
             kick = true,
             autoConnect = true,
             addXPBoost = true,
+            onlyBuyWhenEmpty = true,
             boostAmount = 1
         })
     end
@@ -355,6 +360,7 @@ local function processLogic()
             kick = true,
             autoConnect = true,
             removeXPBoost = true,
+            onlyBuyWhenEmpty = true,
             boostAmount = 2
         })
     end
@@ -363,15 +369,26 @@ local function processLogic()
             kick = true,
             autoConnect = true,
             removeXPBoost = true,
+            onlyBuyWhenEmpty = true,
             boostAmount = 3
         })
     end
-    if prestige == 4 then
+    if prestige == 4 and gold < 950000000 then
         modifyConfig({
             kick = true,
             autoConnect = true,
             removeXPBoost = true,
+            onlyBuyWhenEmpty = true,
             boostAmount = 3
+        })
+    end
+    if prestige == 4 and gold > 950000000 and gold < 1000000000 then
+        modifyConfig({
+            kick = true,
+            autoConnect = true,
+            removeXPBoost = true,
+            onlyBuyWhenEmpty = false,
+            boostAmount = 12
         })
     end
 
