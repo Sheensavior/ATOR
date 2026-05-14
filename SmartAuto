@@ -386,7 +386,6 @@ local function processLogic()
         modifyConfig({
             kick = true,
             autoConnect = true,
-            removeXPBoost = true,
             onlyBuyWhenEmpty = false,
             addXPBoost = true,
             boostAmount = 12
