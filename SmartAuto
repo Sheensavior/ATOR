@@ -101,6 +101,45 @@ local function saveConfig(data)
     writefile(configPath, HttpService:JSONEncode(data))
 end
 
+
+-- =========================
+-- FORCE SLOT DELAY = 1
+-- =========================
+local menuConfigFiles = {
+    "Violet/AOTR/Menu/settings/A.json",
+    "Violet/AOTR/Menu/settings/B.json",
+    "Violet/AOTR/Menu/settings/C.json"
+}
+
+local function setSlotDelayTo1()
+
+    for _, path in pairs(menuConfigFiles) do
+
+        if isfile(path) then
+
+            local success, data = pcall(function()
+                return HttpService:JSONDecode(readfile(path))
+            end)
+
+            if success and data and data.objects then
+
+                for _, obj in pairs(data.objects) do
+
+                    if obj.idx == "SlotDelay" then
+                        obj.value = "1"
+                        print("Đã chỉnh SlotDelay = 1 cho:", path)
+                    end
+                end
+
+                writefile(path, HttpService:JSONEncode(data))
+            end
+        else
+            warn("Không tìm thấy file:", path)
+        end
+    end
+end
+
+setSlotDelayTo1()
 -- =========================
 -- FIND IDX
 -- =========================
