@@ -2,9 +2,11 @@
 -- =========================
 -- CHỈ CHẠY Ở PLACE ID NÀY
 -- =========================
-local TARGET_PLACE_ID = 14916516914
+local MAIN_PLACE_ID = 14916516914
+local SLOT_CHECK_PLACE_ID = 13379208636
 
-if game.PlaceId ~= TARGET_PLACE_ID then
+if game.PlaceId ~= MAIN_PLACE_ID
+and game.PlaceId ~= SLOT_CHECK_PLACE_ID then
     warn("Sai PlaceId - Script không chạy")
     return
 end
@@ -635,4 +637,47 @@ modifyConfig({})
 -- =========================
 processLogic()
 
+-- =========================
+-- AUTO SWITCH SLOT C -> B
+-- CHỈ GAME ID 13379208636
+-- =========================
 
+if game.PlaceId == 13379208636 then
+
+    local currentSlot = getSlot()
+
+    -- chỉ chạy khi file đang là C
+    if currentSlot == "C" then
+
+        local success, text = pcall(function()
+            return game.Players.LocalPlayer.PlayerGui
+                :WaitForChild("Interface")
+                :WaitForChild("Title_Screen")
+                :WaitForChild("Slots")
+                :WaitForChild("B")
+                :WaitForChild("Details")
+                :WaitForChild("Label")
+                .Text
+        end)
+
+        if success and text then
+
+            print("Slot B Label:", text)
+
+            -- tìm số sau Lv.
+            local level = text:match("Lv%.%s*(%d+)")
+
+            level = tonumber(level)
+
+            print("Detected Level:", level)
+
+            -- nếu level = 1
+            if level == 1 then
+
+                print("Slot B là Lv.1 -> đổi slot thành B")
+
+                setSlot("B")
+            end
+        end
+    end
+end
