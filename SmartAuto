@@ -680,7 +680,6 @@ processLogic()
 -- AUTO SWITCH SLOT C -> B
 -- CHỈ GAME ID 13379208636
 -- =========================
-
 if game.PlaceId == 13379208636 then
 
     local currentSlot = getSlot()
@@ -716,16 +715,6 @@ if game.PlaceId == 13379208636 then
                 print("Slot B là Lv.1 -> đổi slot thành B")
 
                 setSlot("B")
-
-                task.wait(1)
-
-                print("Rejoin lại chính server")
-
-                TeleportService:TeleportToPlaceInstance(
-                    game.PlaceId,
-                    game.JobId,
-                    game.Players.LocalPlayer
-                )
             end
         end
     end
