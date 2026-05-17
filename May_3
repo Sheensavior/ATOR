@@ -36,6 +36,13 @@ local RETURN_PLACE = 13379208636
 local filePath = "Violet/AOTR/settings/Auto Farm.json"
 local jsonPath = "prestige_data.json"
 local autoLoadPath = "Violet/AOTR/Menu/settings/autoload.txt"
+if game.PlaceId == 13379208636 then
+    pcall(function()
+
+        writefile(autoLoadPath, "No Auto")
+
+    end)
+end
 
 -- =========================
 -- USERNAME LIST
