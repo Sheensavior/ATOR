@@ -37,10 +37,6 @@ local filePath = "Violet/AOTR/settings/Auto Farm.json"
 local jsonPath = "prestige_data.json"
 local autoLoadPath = "Violet/AOTR/Menu/settings/autoload.txt"
 
--- SPECIAL AUTO SPIN
--- =========================
-
-
 -- =========================
 -- USERNAME LIST
 -- =========================
